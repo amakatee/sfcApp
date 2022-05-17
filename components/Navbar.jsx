@@ -4,6 +4,7 @@ import {CgHome} from 'react-icons/cg'
 import { BsFillPersonFill} from 'react-icons/bs'
 import {GoPackage} from 'react-icons/go'
 import {AiOutlinePayCircle} from 'react-icons/ai'
+import {FaEthereum} from 'react-icons/fa'
 
 
 
@@ -14,7 +15,7 @@ export default function Navbar() {
  
    <header className="header ">
        <div id='logo' className='z-100'><h1>SFH</h1></div>
-       <nav className="nav container">
+       <nav className="container nav">
           <div className="nav__menu">
                <ul className="nav__list">
 
@@ -35,7 +36,7 @@ export default function Navbar() {
 
                    <li className="nav__item">
                        <Link href="" className="nav__link active__link">
-                           <i><AiOutlinePayCircle size={20} color='fff' /></i>
+                           <i><FaEthereum size={20} color='fff' /></i>
                        </Link>
                    </li>
 
