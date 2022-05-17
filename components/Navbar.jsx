@@ -5,11 +5,13 @@ import { BsFillPersonFill} from 'react-icons/bs'
 import {GoPackage} from 'react-icons/go'
 import {AiOutlinePayCircle} from 'react-icons/ai'
 import {FaEthereum} from 'react-icons/fa'
+import { useRouter } from 'next/router'
 
 
 
 
 export default function Navbar() {
+    const router = useRouter()
   return (
     <>
  
@@ -21,28 +23,28 @@ export default function Navbar() {
 
                   
 
-                   <li className="nav__item">
-                       <Link href="home" className="nav__link active__link">
-                           <i><CgHome size={20} color="fff" /></i>
-                       </Link>
+                   <li onClick={() => {router.push('/home')}} className="nav__item">
+            
+                           <i className="nav__link active__link" ><CgHome size={20} color="fff" /></i>
+              
                    </li>
-                   <li className="nav__item">
-                       <Link href="package" className="nav__link active__link">
-                           <i><GoPackage size={20} color="fff" /></i>
-                       </Link>
+                   <li  onClick={() => {router.push('/package')}} className="nav__item">
+     
+                           <i className="nav__link active__link"><GoPackage size={20} color="fff" /></i>
+                     
                    </li>
 
                
 
                    <li className="nav__item">
                        <Link href="" className="nav__link active__link">
-                           <i><FaEthereum size={20} color='fff' /></i>
+                           <i className="nav__link active__link"><FaEthereum size={20} color='fff' /></i>
                        </Link>
                    </li>
 
                    <li className="nav__item">
                        <Link href="" className="nav__link active__link">
-                           <i><BsFillPersonFill size={20} color="fff" /></i>
+                           <i ><BsFillPersonFill size={20} color="fff" /></i>
                        </Link>
                    </li>
 

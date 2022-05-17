@@ -4,23 +4,19 @@ import PackageItem from '../../components/PackageItem'
 import { useSelector } from 'react-redux'
 import { allPackages } from '../../store/features/packageSlice'
 
-const index = () => {
+const payment = () => {
   const products = useSelector(allPackages)
- 
   return (
-    <InnerLayout>
+      <InnerLayout>
         <div className='text-white '>
       
-          <div className='packages-cont'>
-            {products.map(product => (<PackageItem  key={product.id} product={product}/>))}
-            {/* <PackageItem />
-            <PackageItem />
-            <PackageItem /> */}
-          </div>
-        
-        </div>
-    </InnerLayout>
+      <div className='packages-cont'>
+      {products.map(product => (<PackageItem  key={product.id} product={product}/>))}
+      </div>
+    
+    </div>
+      </InnerLayout>
   )
 }
 
-export default index
+export default payment

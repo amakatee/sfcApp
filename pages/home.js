@@ -29,7 +29,7 @@ const HomePage = () => {
 
   return (
     <div >
-    <div className='color=[#fff]w-[100vw] min-h-[100vh] grid content-center '>
+    <div className='text-white w-[100vw] min-h-[100vh] grid content-center '>
       <div className='track-code-cont '>
         <div>
       <h1 className='section-header-title'>Add a tracking number</h1>
