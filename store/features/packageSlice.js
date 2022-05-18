@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
-import {nanoid} from 'nanoid'
+
 
 
 
@@ -46,7 +46,7 @@ const packageSlice = createSlice({
                 return
             }else {
                 state.orders.push({
-                    id: nanoid(),
+                    id:newItem.id,
                     domesticCode: newItem.track,
                     info: newItem.info
                 })

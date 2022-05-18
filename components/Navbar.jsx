@@ -6,17 +6,22 @@ import {GoPackage} from 'react-icons/go'
 import {AiOutlinePayCircle} from 'react-icons/ai'
 import {FaEthereum} from 'react-icons/fa'
 import { useRouter } from 'next/router'
+import { useSession, signIn, signOut } from "next-auth/react"
 
 
 
 
 export default function Navbar() {
     const router = useRouter()
+    const { data: session } = useSession()
+    
+    console.log(session)
   return (
     <>
  
    <header className="header ">
-       <div id='logo' className='z-100'><h1>SFH</h1></div>
+       {session ?   <button onClick={() => signOut()} id='logo' className='z-100'><h1>{'Log Out'}</h1></button>  :   <button onClick={() => router.push("api/auth/signin")} id='logo' className='z-100'><h1>{'Sign In'}</h1></button>}
+
        <nav className="container nav">
           <div className="nav__menu">
                <ul className="nav__list">

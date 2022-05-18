@@ -5,15 +5,20 @@ import {useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/features/packageSlice';
 import { allPackages } from '../store/features/packageSlice';
+import {nanoid} from 'nanoid'
+import {client} from './../lib/client'
 
-const HomePage = () => {
+
+const HomePage = ({users}) => {
   const { register, handleSubmit} = useForm()
-  const products = useSelector(allPackages)
+console.log(users)
+
+
   const dispatch = useDispatch()
 
   function onSubmit({track, info}){
     console.log(track, info)
-    dispatch(addToCart({track: track, info: info}))
+    dispatch(addToCart({ id:nanoid(), track: track, info: info}))
   }
 
 
@@ -27,7 +32,20 @@ const HomePage = () => {
   const [phone, setPhone] = useState('19924237889')
   const [zip, setZip] = useState('510540')
 
-  
+  // const fetchUsers = async () => {
+  //   const query = '[_type == "users"]'
+  //   const users = await client.fetch(query)
+   
+  //   users.forEach(async user => {
+  //     const newUser = {
+  //       email: user.email
+  //     }
+  //     setUsers(prev => [...prev, newUser ])
+  //   })
+   
+  // }
+ 
+
   const warehouseInfo =  
   `${recipient}
   ${address}
@@ -166,3 +184,12 @@ const HomePage = () => {
 }
 
 export default HomePage
+
+export const getServerSideProps = async () => {
+  const query = "*[_type == 'users']"
+  const users = await client.fetch(query)
+  console.log(users)
+  return {
+    props: {users}
+  }
+}

@@ -25,6 +25,15 @@ body {
 .nav__item {
     cursor: pointer;
 }
+.empty-cont-span {
+    display: grid;
+    place-content: center;
+    font-size: 2rem;
+    font-weight: 200;
+    letter-spacing: 1px;
+    margin-top: 4rem;
+    color: rgb(185, 184, 184);
+}
 #logo {
     position: fixed;
     top: 0;
@@ -42,16 +51,17 @@ body {
 }
 #logo h1 {
     color: white;
-    letter-spacing: 2px;
+    font-size: .7rem;
+    letter-spacing: 1px;
 
 }  
 .copy-alert {
    background-color: blue;
    width: 12rem;
-border-radius: 1rem;
+   border-radius: 1rem;
    aspect-ratio: 1.5 / .8;
-  display: grid;
-  place-content: center;
+   display: grid;
+   place-content: center;
    position: absolute;
    top: 50%;
    left: 50%;
