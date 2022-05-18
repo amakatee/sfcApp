@@ -1,9 +1,25 @@
+import { produceWithPatches } from 'immer';
 import React, {useState, useRef, useEffect} from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-
+import {useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../store/features/packageSlice';
+import { allPackages } from '../store/features/packageSlice';
 
 const HomePage = () => {
+  const { register, handleSubmit} = useForm()
+  const products = useSelector(allPackages)
+  const dispatch = useDispatch()
 
+  function onSubmit({track, info}){
+    console.log(track, info)
+    dispatch(addToCart({track: track, info: info}))
+  }
+
+
+
+  const [domesticCode, setDomesticCode] = useState('')
+  const [infoMessage, setInfoMessage] = useState('')
 
   const [copied, setCopied] = useState(false)
   const [recipient, setRecipient] = useState('PNNKYHHT金桔(8个字母不能错)')
@@ -11,6 +27,7 @@ const HomePage = () => {
   const [phone, setPhone] = useState('19924237889')
   const [zip, setZip] = useState('510540')
 
+  
   const warehouseInfo =  
   `${recipient}
   ${address}
@@ -31,7 +48,7 @@ const HomePage = () => {
     <div >
     <div className='text-white w-[100vw] min-h-[100vh] grid content-center '>
       <div className='track-code-cont '>
-        <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
       <h1 className='section-header-title'>Add a tracking number</h1>
         <div className='track glass-background '>
           
@@ -40,6 +57,9 @@ const HomePage = () => {
           <input
           className='track-input'
           placeholder=''
+          name='track'
+          {...register('track', {required:true})}
+          // onChange={(e) => setDomesticCode(e.target.value)}
        
           ></input>
           </div>
@@ -50,12 +70,16 @@ const HomePage = () => {
           <input
           className='track-input'
           placeholder=''
+          name="info"
+          {...register("info")}
+          // onChange={(e) => setDomesticCode(e.target.infoMessage)}
+        
        
           ></input>
           </div>
-         <div className='button-main' >submit</div>
+         <button type="submit" className='button-main' >submit</button>
         </div>
-        </div>
+        </form>
 
     
       <div className='warehouse-cont '>
@@ -104,7 +128,7 @@ const HomePage = () => {
         <CopyToClipboard text={warehouseInfo}
         onCopy = {() => setCopied(true)}
         > 
-          <div className='cursor-pointer button-main'>copy</div>
+          <button className='cursor-pointer button-main'>copy</button>
          </CopyToClipboard>
          {copied ? <span className='copy-alert glass-background '>coppied</span> : null}
         </div>

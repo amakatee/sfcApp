@@ -12,10 +12,8 @@ const index = () => {
         <div className='text-white '>
       
           <div className='packages-cont'>
-            {products.map(product => (<PackageItem  key={product.id} product={product}/>))}
-            {/* <PackageItem />
-            <PackageItem />
-            <PackageItem /> */}
+            {products?.map(product => (<PackageItem  key={product.id} product={product}/>))}
+           
           </div>
         
         </div>

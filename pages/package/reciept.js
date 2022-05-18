@@ -11,7 +11,7 @@ const reciept = () => {
        <div className='text-white '>
       
       <div className='packages-cont'>
-      {products.map(product => (<PackageItem  key={product.id} product={product}/>))}
+      {products?.map(product => (<PackageItem  key={product.id} product={product}/>))}
        
       </div>
     
