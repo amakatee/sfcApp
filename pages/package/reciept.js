@@ -1,8 +1,7 @@
 import React from 'react'
 import InnerLayout from '../../components/InnerLayout'
 import PackageItem from '../../components/PackageItem'
-import { useSelector } from 'react-redux'
-import { allPackages } from '../../store/features/packageSlice'
+
 import { client } from '../../lib/client'
 
 const reciept = ({products}) => {

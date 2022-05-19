@@ -2,9 +2,7 @@ import { produceWithPatches } from 'immer';
 import React, {useState, useRef, useEffect} from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../store/features/packageSlice';
-import { allPackages } from '../store/features/packageSlice';
+
 
 import {client} from './../lib/client'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -59,12 +57,12 @@ const createUserAccount = async (user)=> {
 
 
 
-  const dispatch = useDispatch()
+
 
   function onSubmit({track, info}){
     console.log(track, info)
     createUserAccount(user)
-    dispatch(addToCart({ id:nanoid(), track: track, info: info}))
+   
     setSubmited(true)
   }
 
