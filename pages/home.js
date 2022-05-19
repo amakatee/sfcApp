@@ -5,12 +5,57 @@ import {useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/features/packageSlice';
 import { allPackages } from '../store/features/packageSlice';
-import {nanoid} from 'nanoid'
+
 import {client} from './../lib/client'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0'
+import { nanoid } from 'nanoid';
 
 
 const HomePage = () => {
   const { register, handleSubmit} = useForm()
+  const [submited, setSubmited] = useState(false)
+  const {user, isLoading, error} = useUser()
+  // const {email, nickname} = user
+  // console.log(email)
+
+
+const createUserAccount = async (user)=> {
+
+  try{
+    const userDoc = {
+      _id: nanoid() ,
+      _type:"users",
+      email: user.email,
+     
+
+     
+      
+
+    }
+    await client.createIfNotExists(userDoc)
+
+  }catch(err){
+    console.log(err)
+
+  }
+
+}  
+  // const newUser = async (e) => {
+  //   e.preventDefault()
+  //   const newUser = nanoid()
+  //   const user = {
+  //     _type:"users",
+  //     _id: newUser,
+  //     email: 'email',
+  //     timestamp: new Date(Date.now().toISOString())
+
+
+  //   }
+  //   await client.createIfNotExists(user)
+  // }
+  
+  
 
 
 
@@ -18,7 +63,9 @@ const HomePage = () => {
 
   function onSubmit({track, info}){
     console.log(track, info)
+    createUserAccount(user)
     dispatch(addToCart({ id:nanoid(), track: track, info: info}))
+    setSubmited(true)
   }
 
 
@@ -62,6 +109,14 @@ const HomePage = () => {
 
   },[copied])
 
+  useEffect(() => {
+    let timer = setTimeout(() => setSubmited(false) , 1000)
+
+    return () => clearTimeout(timer)
+    
+
+  },[submited])
+
   return (
     <div >
     <div className='text-white w-[100vw] min-h-[100vh] grid content-center '>
@@ -96,6 +151,7 @@ const HomePage = () => {
           ></input>
           </div>
          <button type="submit" className='button-main' >submit</button>
+         {submited ? <span className='copy-alert glass-background '>Submited</span> : null}
         </div>
         </form>
 
@@ -185,6 +241,7 @@ const HomePage = () => {
 
 export default HomePage
 
+export const getServerSideProps = withPageAuthRequired()
 // export const getServerSideProps = async () => {
 //   const query = "*[_type == 'users']"
 //   const users = await client.fetch(query)

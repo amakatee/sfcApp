@@ -8,7 +8,7 @@ import { client } from '../lib/client'
 
 const Home: NextPage = () => {
   return ( 
-    <div></div>
+    <div ></div>
       // <HomePage />
      
   

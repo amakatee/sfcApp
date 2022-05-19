@@ -6,21 +6,24 @@ import {GoPackage} from 'react-icons/go'
 import {AiOutlinePayCircle} from 'react-icons/ai'
 import {FaEthereum} from 'react-icons/fa'
 import { useRouter } from 'next/router'
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useUser } from '@auth0/nextjs-auth0'
+
 
 
 
 
 export default function Navbar() {
     const router = useRouter()
-    const { data: session } = useSession()
-    
-    console.log(session)
+   const {user, isLoading, error} = useUser()
+   
+   if(error) return <div>{error.message}</div>
+   if(isLoading) return <div>Loading... </div>
+
   return (
     <>
  
    <header className="header ">
-       {session ?   <button onClick={() => signOut()} id='logo' className='z-100'><h1>{'Log Out'}</h1></button>  :   <button onClick={() => router.push("api/auth/signin")} id='logo' className='z-100'><h1>{'Sign In'}</h1></button>}
+       {user ?   <button onClick={() => router.push("api/auth/logout")} id='logo' className='z-100'><h1>{'Log Out'}</h1></button>  :   <button onClick={() => router.push("api/auth/login")} id='logo' className='z-100'><h1>{'Sign In'}</h1></button>}
 
        <nav className="container nav">
           <div className="nav__menu">
@@ -61,3 +64,12 @@ export default function Navbar() {
    </>
   )
 }
+
+// export const getStaticProps = async () => {
+//   const query = "*[_type == 'users']"
+//   const users = await client.fetch(query)
+//   console.log(users)
+//   return {
+//     props: {users}
+//   }
+// }
