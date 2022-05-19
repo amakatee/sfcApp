@@ -34,11 +34,11 @@ const Home: NextPage = () => {
   }
 
   const userLoggedIn = (
-    <div>Logged In</div>
+    <div >Logged In</div>
     
   )
-  const noUserFound = (
-    <div>
+  const  noUserFound = (
+    <div >
       <h1
       onClick={() => connectWallet()}
       >Connect Wallet</h1>
@@ -49,8 +49,8 @@ const Home: NextPage = () => {
   )
 
   const moMetaMaskFound = (
-    <div>
-      You Must Imstall Meta Mask
+    <div >
+      You Must Install Meta Mask :)
     </div>
 
   )
@@ -58,12 +58,12 @@ const Home: NextPage = () => {
     <div> Error  occruied</div>
   )
   const loading = (
-    <div> 
+    <div > 
       Loading ...
     </div>
   )
   return ( 
-    <div >{app(appStatus)}</div>
+    <div className='index-container ' >{app(appStatus)}</div>
       // <HomePage />
      
   

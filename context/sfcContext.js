@@ -4,11 +4,13 @@ import { client } from "../lib/client";
 
 
 
+
 export const SfcContext = createContext()
 
 export const SfcProvider = ({ children }) => {
     const [appStatus, setAppStatus ] = useState('loading')
     const [currentAccount, setCurrentAccount] = useState('')
+    const [packs, setPackages] = useState([])
     const router = useRouter()
 
     useEffect(() => {
@@ -82,6 +84,35 @@ export const SfcProvider = ({ children }) => {
         }
 
     }
+
+    const fetchPAckages = async () => {
+        const query = `
+        *[_type == 'packages']{
+            "user": user->{nicname, walletAddress},
+            package,
+            timestamp
+        }| order(timestamp desc)
+        `
+        const packages = await client.fetch(query)
+        setPackages([])
+        sanityResponse.forEach(async (item) => {
+            const newItem = {
+                package: item.package,
+                timestamp: item.timestamp,
+                user: {
+                    nickname: item.user.nickname,
+                    walletAddress: item.user.walletAddress
+                },
+           
+            }
+            setPackages( prev => [...prev , newItem])
+
+        })
+    }
+
+    const getCurrentUserDetails = async (userAccount = currentAccount) => {
+        if( appStatus !== 'connected') return 
+    } 
 
     return (
        <SfcContext.Provider 

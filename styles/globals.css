@@ -34,6 +34,12 @@ body {
     margin-top: 4rem;
     color: rgb(185, 184, 184);
 }
+.index-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 #logo {
     position: fixed;
     top: 0;

@@ -9,6 +9,16 @@ export const packageShemas = {
             type: 'string'
         },
         {
+            name: 'info',
+            title: 'Info',
+            type: 'string'
+        },
+        {
+            name:'timestamp',
+            title: 'Time Stamp',
+            type: 'datetime'
+        },
+        {
             name: 'user',
             titile: 'User Infomation',
             type: 'reference',

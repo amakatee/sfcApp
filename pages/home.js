@@ -4,6 +4,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {useForm } from 'react-hook-form'
 import { useContext } from 'react';
 import { SfcContext } from '../context/sfcContext';
+import  {nanoid} from 'nanoid'
 
 import {client} from './../lib/client'
 
@@ -11,19 +12,9 @@ import {client} from './../lib/client'
 
 const HomePage = () => {
 
-
-  const { register, handleSubmit} = useForm()
+ const {currentAccount} = useContext(SfcContext)
+  const { register, handleSubmit, reset} = useForm()
   const [submited, setSubmited] = useState(false)
-
-
-  function onSubmit({track, info}){
-    console.log(track, info)
-
-   
-    setSubmited(true)
-  }
-
-
 
   const [domesticCode, setDomesticCode] = useState('')
   const [infoMessage, setInfoMessage] = useState('')
@@ -34,8 +25,40 @@ const HomePage = () => {
   const [phone, setPhone] = useState('19924237889')
   const [zip, setZip] = useState('510540')
 
- 
 
+  async function onSubmit({track, info}){
+    console.log(track, info)
+   
+ 
+    const  packageId = `${currentAccount}_${Date.now()}`
+    const packageDoc = {
+      _type: 'packages',
+      _id: packageId,
+      domesticTrack:track,
+      info:info,
+      timestamp: new Date().toISOString(),
+      user: {
+        _key: packageId,
+        _type:'reference',
+        _ref: currentAccount,
+
+      }
+    }
+    await client.createIfNotExists(packageDoc)
+    await client
+      .patch(currentAccount)
+      .setIfMissing({packages: []})
+      // .insert('after', 'packages[-1]'), [
+      //   {_key: packageId,
+      //     _type:'reference',
+      //     _ref: packageId
+      //   }
+      // ].commit()
+
+    reset()
+    setSubmited(true)
+    
+  }
   const warehouseInfo =  
   `${recipient}
   ${address}
