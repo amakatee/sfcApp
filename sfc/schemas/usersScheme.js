@@ -10,14 +10,22 @@ export const usersScheme = {
 
         },
         {
-            name: 'email',
-            title: 'E-mail',
+            name: 'walletAddress',
+            title: 'Wallet Address',
             type: 'string'
         },
         {
-            name: 'password',
-            title: 'Password',
-            type: 'string'
+            name: 'packages',
+            title: 'Packages',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type:'packages'}]
+                }
+               
+
+            ] 
         }
     ]
 }

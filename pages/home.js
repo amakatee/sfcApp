@@ -2,66 +2,23 @@ import { produceWithPatches } from 'immer';
 import React, {useState, useRef, useEffect} from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {useForm } from 'react-hook-form'
-
+import { useContext } from 'react';
+import { SfcContext } from '../context/sfcContext';
 
 import {client} from './../lib/client'
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import { useUser } from '@auth0/nextjs-auth0'
-import { nanoid } from 'nanoid';
+
 
 
 const HomePage = () => {
+
+
   const { register, handleSubmit} = useForm()
   const [submited, setSubmited] = useState(false)
-  const {user, isLoading, error} = useUser()
-  // const {email, nickname} = user
-  // console.log(email)
-
-
-const createUserAccount = async (user)=> {
-
-  try{
-    const userDoc = {
-      _id: nanoid() ,
-      _type:"users",
-      email: user.email,
-     
-
-     
-      
-
-    }
-    await client.createIfNotExists(userDoc)
-
-  }catch(err){
-    console.log(err)
-
-  }
-
-}  
-  // const newUser = async (e) => {
-  //   e.preventDefault()
-  //   const newUser = nanoid()
-  //   const user = {
-  //     _type:"users",
-  //     _id: newUser,
-  //     email: 'email',
-  //     timestamp: new Date(Date.now().toISOString())
-
-
-  //   }
-  //   await client.createIfNotExists(user)
-  // }
-  
-  
-
-
-
 
 
   function onSubmit({track, info}){
     console.log(track, info)
-    createUserAccount(user)
+
    
     setSubmited(true)
   }
@@ -77,18 +34,6 @@ const createUserAccount = async (user)=> {
   const [phone, setPhone] = useState('19924237889')
   const [zip, setZip] = useState('510540')
 
-  // const fetchUsers = async () => {
-  //   const query = '[_type == "users"]'
-  //   const users = await client.fetch(query)
-   
-  //   users.forEach(async user => {
-  //     const newUser = {
-  //       email: user.email
-  //     }
-  //     setUsers(prev => [...prev, newUser ])
-  //   })
-   
-  // }
  
 
   const warehouseInfo =  
@@ -239,7 +184,7 @@ const createUserAccount = async (user)=> {
 
 export default HomePage
 
-export const getServerSideProps = withPageAuthRequired()
+// export const getServerSideProps = withPageAuthRequired()
 // export const getServerSideProps = async () => {
 //   const query = "*[_type == 'users']"
 //   const users = await client.fetch(query)

@@ -1,19 +1,20 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import Layout from '../components/Layout'
+import { SfcProvider } from '../context/sfcContext'
 
 
-import { UserProvider } from '@auth0/nextjs-auth0'
+
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <UserProvider>
-
-   <Layout>
+  return  <SfcProvider>
+  <Layout>
      <Component {...pageProps} />
   </Layout>
+  </SfcProvider>
 
-  </UserProvider>
+
  
 }
 

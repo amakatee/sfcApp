@@ -5,14 +5,17 @@ import { useSelector } from 'react-redux'
 
 
 const index = () => {
+ 
   const products = []
+
+  
  
   return (
     <InnerLayout>
         <div className='text-white '>
       
           <div className='packages-cont'>
-            {products?.map(product => (<PackageItem  key={product.id} product={product}/>))}
+            {products.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : products?.map(product => (<PackageItem  key={product.id} product={product}/>))}
            
           </div>
         

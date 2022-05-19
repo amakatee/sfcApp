@@ -6,7 +6,6 @@ import {GoPackage} from 'react-icons/go'
 import {AiOutlinePayCircle} from 'react-icons/ai'
 import {FaEthereum} from 'react-icons/fa'
 import { useRouter } from 'next/router'
-import { useUser } from '@auth0/nextjs-auth0'
 
 
 
@@ -14,16 +13,16 @@ import { useUser } from '@auth0/nextjs-auth0'
 
 export default function Navbar() {
     const router = useRouter()
-   const {user, isLoading, error} = useUser()
+//    const {user, isLoading, error} = useUser()
    
-   if(error) return <div>{error.message}</div>
-   if(isLoading) return <div>Loading... </div>
+//    if(error) return <div>{error.message}</div>
+//    if(isLoading) return <div>Loading... </div>
 
   return (
     <>
  
    <header className="header ">
-       {user ?   <button onClick={() => router.push("api/auth/logout")} id='logo' className='z-100'><h1>{'Log Out'}</h1></button>  :   <button onClick={() => router.push("api/auth/login")} id='logo' className='z-100'><h1>{'Sign In'}</h1></button>}
+       {/* {user ?   <button onClick={() => router.push("api/auth/logout")} id='logo' className='z-100'><h1>{'Log Out'}</h1></button>  :   <button onClick={() => router.push("api/auth/login")} id='logo' className='z-100'><h1>{'Sign In'}</h1></button>} */}
 
        <nav className="container nav">
           <div className="nav__menu">
