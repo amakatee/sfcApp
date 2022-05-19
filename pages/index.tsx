@@ -1,14 +1,15 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { client } from '../lib/client'
 
-import HomePage from './home'
+
 
 
 const Home: NextPage = () => {
-  return (
-
-      <HomePage />
+  return ( 
+    <div></div>
+      // <HomePage />
      
   
   )

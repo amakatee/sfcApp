@@ -9,9 +9,9 @@ import {nanoid} from 'nanoid'
 import {client} from './../lib/client'
 
 
-const HomePage = ({users}) => {
+const HomePage = () => {
   const { register, handleSubmit} = useForm()
-console.log(users)
+
 
 
   const dispatch = useDispatch()
@@ -185,11 +185,11 @@ console.log(users)
 
 export default HomePage
 
-export const getServerSideProps = async () => {
-  const query = "*[_type == 'users']"
-  const users = await client.fetch(query)
-  console.log(users)
-  return {
-    props: {users}
-  }
-}
+// export const getServerSideProps = async () => {
+//   const query = "*[_type == 'users']"
+//   const users = await client.fetch(query)
+//   console.log(users)
+//   return {
+//     props: {users}
+//   }
+// }
