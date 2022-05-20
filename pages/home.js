@@ -12,7 +12,7 @@ import {client} from './../lib/client'
 
 const HomePage = () => {
 
- const {currentAccount} = useContext(SfcContext)
+ const {currentAccount, fetchPackages, currentUser} = useContext(SfcContext)
   const { register, handleSubmit, reset} = useForm()
   const [submited, setSubmited] = useState(false)
 
@@ -28,6 +28,7 @@ const HomePage = () => {
 
   async function onSubmit({track, info}){
     console.log(track, info)
+   
    
  
     const  packageId = `${currentAccount}_${Date.now()}`
@@ -48,13 +49,14 @@ const HomePage = () => {
     await client
       .patch(currentAccount)
       .setIfMissing({packages: []})
-      // .insert('after', 'packages[-1]'), [
-      //   {_key: packageId,
-      //     _type:'reference',
-      //     _ref: packageId
-      //   }
-      // ].commit()
-
+      .insert('after', 'packages[-1]', [
+        {_key: packageId,
+          _type:'reference',
+          _ref: packageId
+        }
+      ]).commit()
+      
+    await fetchPackages()
     reset()
     setSubmited(true)
     
@@ -85,6 +87,7 @@ const HomePage = () => {
 
   return (
     <div >
+   
     <div className='text-white w-[100vw] min-h-[100vh] grid content-center '>
       <div className='track-code-cont '>
         <form onSubmit={handleSubmit(onSubmit)}>

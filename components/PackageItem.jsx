@@ -2,15 +2,19 @@ import React from 'react'
 
 const PackageItem = ({product}) => {
     console.log(product.recipient)
-    const { recipient, domesticCode, info, type, weight, billing, internationalCode} = product
+    const {domesticTrack, user, recipient, domesticCode, info, type, weight, billing, internationalCode} = product
   return (
     <div className='item-cont'>
     <div className='item-img'>
       <img width="100px" src='/banner-thumb.png'></img>
     </div>
     <div className='item-desc'>
+        {user && <p>User: <span className='item-span' >{user.walletAddress.slice(0,4)} </span></p>}
         {recipient && <p>Recipient: <span className='item-span' >{recipient} </span></p> }
          
+        {domesticTrack &&  <p>Track code: <span className='item-span' >{domesticTrack}</span></p>}
+
+
         {domesticCode &&  <p>Track code: <span className='item-span' >{domesticCode}</span></p>}
 
         {info &&  <p>Info: <span className='item-span' >{info} </span> </p>}

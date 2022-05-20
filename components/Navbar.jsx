@@ -6,6 +6,8 @@ import {GoPackage} from 'react-icons/go'
 import {AiOutlinePayCircle} from 'react-icons/ai'
 import {FaEthereum} from 'react-icons/fa'
 import { useRouter } from 'next/router'
+import { SfcContext } from '../context/sfcContext'
+import { useContext } from 'react'
 
 
 
@@ -13,10 +15,7 @@ import { useRouter } from 'next/router'
 
 export default function Navbar() {
     const router = useRouter()
-//    const {user, isLoading, error} = useUser()
-   
-//    if(error) return <div>{error.message}</div>
-//    if(isLoading) return <div>Loading... </div>
+    const {currentAccount, curentUser} = useContext(SfcContext)
 
   return (
     <>
@@ -30,12 +29,12 @@ export default function Navbar() {
 
                   
 
-                   <li onClick={() => {router.push('/home')}} className="nav__item">
+                   <li onClick={() => {router.push(`/home/?mint=${currentAccount}`)}} className="nav__item">
             
                            <i className="nav__link active__link" ><CgHome size={20} color="fff" /></i>
               
                    </li>
-                   <li  onClick={() => {router.push('/package')}} className="nav__item">
+                   <li  onClick={() => {router.push(`/package/?mint=${currentAccount}`)}} className="nav__item">
      
                            <i className="nav__link active__link"><GoPackage size={20} color="fff" /></i>
                      

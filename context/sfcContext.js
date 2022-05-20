@@ -10,12 +10,21 @@ export const SfcContext = createContext()
 export const SfcProvider = ({ children }) => {
     const [appStatus, setAppStatus ] = useState('loading')
     const [currentAccount, setCurrentAccount] = useState('')
-    const [packs, setPackages] = useState([])
+    const [currentUser, setCurrentUser] = useState({})
+    const [products, setPackages] = useState([])
     const router = useRouter()
 
     useEffect(() => {
         checkIfWalletIsConnected()
     }, [])
+
+    useEffect(()=>{
+        if(!currentAccount && appStatus =='connected') return 
+        getCurrentUserDetails(currentAccount)
+        fetchPackages()
+
+    }, [currentAccount, appStatus])
+
     const checkIfWalletIsConnected = async  () => {
         if(!window.ethereum) return setAppStatus('noMetaMask')
         try {
@@ -50,6 +59,7 @@ export const SfcProvider = ({ children }) => {
             })
             if(addressArray > 0) {
                 setCurrentAccount(addressArray[0])
+                router.push('/home')
             } else {
                 router.push('/')
                 setAppStatus('notConnected')
@@ -85,22 +95,24 @@ export const SfcProvider = ({ children }) => {
 
     }
 
-    const fetchPAckages = async () => {
+    const fetchPackages = async () => {
         const query = `
         *[_type == 'packages']{
-            "user": user->{nicname, walletAddress},
-            package,
+            "user": user->{walletAddress},
+            info,
+            domesticTrack,
             timestamp
         }| order(timestamp desc)
         `
         const packages = await client.fetch(query)
-        setPackages([])
-        sanityResponse.forEach(async (item) => {
+      
+        packages.forEach(async (item) => {
             const newItem = {
-                package: item.package,
+                domesticTrack: item.domesticTrack,
+                info:item.info,
                 timestamp: item.timestamp,
                 user: {
-                    nickname: item.user.nickname,
+                   
                     walletAddress: item.user.walletAddress
                 },
            
@@ -112,6 +124,22 @@ export const SfcProvider = ({ children }) => {
 
     const getCurrentUserDetails = async (userAccount = currentAccount) => {
         if( appStatus !== 'connected') return 
+
+        const query = `
+        *[_type == "users" && _id == "${userAccount}"]{
+            "packages": packages[]->{timestamp, domesticTrack, info}|order(timestamp desc),
+        
+            walletAddress
+                }
+              
+      `
+      const response = await client.fetch(query)
+
+      setCurrentUser({
+        domesticTrack: response[0].domesticTrack,
+        info: response[0].info,
+        walletAddress: response[0].walletAddress
+      })
     } 
 
     return (
@@ -119,7 +147,11 @@ export const SfcProvider = ({ children }) => {
        value={{ 
         appStatus, 
         currentAccount,
-        connectWallet
+        connectWallet,
+        products,
+        fetchPackages,
+        currentUser,
+        getCurrentUserDetails
     }
        }> 
        {children}

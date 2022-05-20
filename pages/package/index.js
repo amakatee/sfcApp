@@ -3,10 +3,15 @@ import InnerLayout from '../../components/InnerLayout'
 import PackageItem from '../../components/PackageItem'
 import { useSelector } from 'react-redux'
 
+import { SfcContext } from '../../context/sfcContext';
+import { useContext } from 'react'
+
 
 const index = () => {
- 
-  const products = []
+  const {products} = useContext(SfcContext)
+  console.log(products)
+
+
 
   
  
