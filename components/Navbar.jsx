@@ -15,8 +15,10 @@ import { useContext } from 'react'
 
 export default function Navbar() {
     const router = useRouter()
-    const {currentAccount, curentUser} = useContext(SfcContext)
+    const {currentAccount, curentUser, products} = useContext(SfcContext)
+    console.log(products)
 
+    
   return (
     <>
  

@@ -8,8 +8,12 @@ import { useContext } from 'react'
 
 
 const index = () => {
-  const {products} = useContext(SfcContext)
-  console.log(products)
+  const {products , currentAccount, currentUser} = useContext(SfcContext)
+  console.log(currentUser)
+ 
+  const packasges = products.filter(item => item.user.walletAddress === currentAccount)
+    
+
 
 
 
@@ -20,7 +24,7 @@ const index = () => {
         <div className='text-white '>
       
           <div className='packages-cont'>
-            {products.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : products?.map(product => (<PackageItem  key={product.id} product={product}/>))}
+            {packasges.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : packasges?.map(product => (<PackageItem  key={product.id} product={product}/>))}
            
           </div>
         

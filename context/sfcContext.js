@@ -12,6 +12,7 @@ export const SfcProvider = ({ children }) => {
     const [currentAccount, setCurrentAccount] = useState('')
     const [currentUser, setCurrentUser] = useState({})
     const [products, setPackages] = useState([])
+    const [storageProducts, setStorageProducts] = useState([])
     const router = useRouter()
 
     useEffect(() => {
@@ -22,6 +23,7 @@ export const SfcProvider = ({ children }) => {
         if(!currentAccount && appStatus =='connected') return 
         getCurrentUserDetails(currentAccount)
         fetchPackages()
+        fetchStorage()
 
     }, [currentAccount, appStatus])
 
@@ -122,12 +124,39 @@ export const SfcProvider = ({ children }) => {
         })
     }
 
+    const fetchStorage = async () => {
+        const query = ` 
+        *[_type == 'pendingStorage']{
+            "user": user->{walletAddress},
+            info,
+            weight,
+   
+        }| order(timestamp desc)`
+        const storagePackages = await client.fetch(query)
+
+        storagePackages.forEach(async (item) => {
+            const newItem = {
+                info:item.info,
+                weight: item.weight,
+                user: {
+                   
+                    walletAddress: item.user.walletAddress
+                },
+           
+            }
+            setStorageProducts(prev => [...prev, newItem])
+
+        })
+    }
+
+
     const getCurrentUserDetails = async (userAccount = currentAccount) => {
         if( appStatus !== 'connected') return 
 
         const query = `
         *[_type == "users" && _id == "${userAccount}"]{
             "packages": packages[]->{timestamp, domesticTrack, info}|order(timestamp desc),
+            "pendingStorage": pendingStorage[]->{weight, info}|order(timestamp desc),
         
             walletAddress
                 }
@@ -138,7 +167,8 @@ export const SfcProvider = ({ children }) => {
       setCurrentUser({
         domesticTrack: response[0].domesticTrack,
         info: response[0].info,
-        walletAddress: response[0].walletAddress
+        walletAddress: response[0].walletAddress,
+        weight: response[0].weight,
       })
     } 
 
@@ -151,7 +181,10 @@ export const SfcProvider = ({ children }) => {
         products,
         fetchPackages,
         currentUser,
-        getCurrentUserDetails
+        getCurrentUserDetails,
+        storageProducts
+
+        
     }
        }> 
        {children}

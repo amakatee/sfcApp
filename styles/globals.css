@@ -475,6 +475,7 @@ i {
     padding-top: 1rem;
     display: flex;
     flex-direction: column;
+    height: 25rem;
     overflow-y: scroll;
     gap:1rem;
     padding-bottom: 4rem;

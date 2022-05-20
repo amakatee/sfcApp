@@ -26,6 +26,19 @@ export const usersScheme = {
                
 
             ] 
+        },
+        {
+            name: 'pendingStorage',
+            title: 'Pending Storage',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type:'pendingStorage'}]
+                }
+               
+
+            ] 
         }
     ]
 }
