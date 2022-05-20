@@ -11,8 +11,14 @@ const index = () => {
   const {products , currentAccount, currentUser} = useContext(SfcContext)
   console.log(currentUser)
  
-  const packasges = products.filter(item => item.user.walletAddress === currentAccount)
-    
+  const packages = products.filter(item => item.user.walletAddress === currentAccount)
+
+  const ids = packages.map(item => item.id)
+  const filteredIds = [...new Set(ids)]
+  const filteredPackages = filteredIds.map( id => {
+    return packages.find(item => item.id === id)
+  })
+
 
 
 
@@ -24,7 +30,7 @@ const index = () => {
         <div className='text-white '>
       
           <div className='packages-cont'>
-            {packasges.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : packasges?.map(product => (<PackageItem  key={product.id} product={product}/>))}
+            {filteredPackages.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : filteredPackages?.map(product => (<PackageItem key={product.id} product={product}/>))}
            
           </div>
         

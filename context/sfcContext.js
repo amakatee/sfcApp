@@ -1,6 +1,7 @@
 import { createContext,useEffect,useState } from "react";
 import { useRouter } from "next/router";
 import { client } from "../lib/client";
+import { nanoid } from "nanoid";
 
 
 
@@ -110,6 +111,7 @@ export const SfcProvider = ({ children }) => {
       
         packages.forEach(async (item) => {
             const newItem = {
+                id: item.timestamp,
                 domesticTrack: item.domesticTrack,
                 info:item.info,
                 timestamp: item.timestamp,
@@ -130,12 +132,14 @@ export const SfcProvider = ({ children }) => {
             "user": user->{walletAddress},
             info,
             weight,
+            order
    
         }| order(timestamp desc)`
         const storagePackages = await client.fetch(query)
-
-        storagePackages.forEach(async (item) => {
+      
+        storagePackages.forEach(async(item) => {
             const newItem = {
+                id: item.order,
                 info:item.info,
                 weight: item.weight,
                 user: {
@@ -156,7 +160,7 @@ export const SfcProvider = ({ children }) => {
         const query = `
         *[_type == "users" && _id == "${userAccount}"]{
             "packages": packages[]->{timestamp, domesticTrack, info}|order(timestamp desc),
-            "pendingStorage": pendingStorage[]->{weight, info}|order(timestamp desc),
+            "pendingStorage": pendingStorage[]->{weight, info, order}|order(timestamp desc),
         
             walletAddress
                 }
@@ -169,6 +173,7 @@ export const SfcProvider = ({ children }) => {
         info: response[0].info,
         walletAddress: response[0].walletAddress,
         weight: response[0].weight,
+        order: response[0].order
       })
     } 
 

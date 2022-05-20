@@ -7,17 +7,26 @@ import { SfcContext } from '../../context/sfcContext'
 import {client} from './../../lib/client'
 
 
-const pending = ({products}) => {
+const pending = () => {
   const {storageProducts, currentAccount} = useContext(SfcContext)
 
-console.log(storageProducts)
+  const st = storageProducts.filter(item => item.user.walletAddress === currentAccount)
+   const storage = [...new Set(st)]
+  const ids = storage.map(stor => stor.id)
+  const filteredId = [...new Set(ids)]
+
+  const filteredStorage = filteredId.map(id => {
+    return storage.find(item => item.id ===id)
+  })
+  
+
 
   return (
       <InnerLayout>
     <div className='text-white '>
       
       <div className='packages-cont'>
-      {storageProducts.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : storageProducts?.map(product => (<PackageItem  key={product.id} product={product}/>))}
+      {filteredStorage.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : filteredStorage?.map(product => (<PackageItem  key={product.id} product={product}/>))}
         
       </div>
     
@@ -28,11 +37,11 @@ console.log(storageProducts)
 
 export default pending
 
-export const getServerSideProps = async () => {
-  const query = "*[_type == 'pendingStorage']"
-  const products = await client.fetch(query)
-  console.log(products)
-  return {
-    props: {products}
-  }
-}
+// export const getServerSideProps = async () => {
+//   const query = "*[_type == 'pendingStorage']"
+//   const products = await client.fetch(query)
+//   console.log(products)
+//   return {
+//     props: {products}
+//   }
+// }

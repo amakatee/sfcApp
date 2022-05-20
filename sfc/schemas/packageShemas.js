@@ -9,6 +9,11 @@ export const packageShemas = {
             type: 'string'
         },
         {
+            name: 'order',
+            title: 'order No',
+            type: 'string'
+        },
+        {
             name: 'info',
             title: 'Info',
             type: 'string'

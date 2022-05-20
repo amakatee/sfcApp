@@ -25,9 +25,13 @@ const HomePage = () => {
   const [phone, setPhone] = useState('19924237889')
   const [zip, setZip] = useState('510540')
 
+  let orderPackage = 0
 
   async function onSubmit({track, info}){
     console.log(track, info)
+    //  if(!currentUser) return  <span className='copy-alert glass-background '>coppied</span>
+
+
    
    
  

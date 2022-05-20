@@ -9,6 +9,11 @@ export const pendingPayment = {
             type: 'string'
         },
         {
+            name: 'order',
+            title: 'order No',
+            type: 'string'
+        },
+        {
             name: 'type',
             title: 'Type',
             type: 'string'
