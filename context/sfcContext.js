@@ -231,6 +231,7 @@ export const SfcProvider = ({ children }) => {
             secondName,
             telegram,
             fetchId,
+            zip
         }`
         const addresses = await client.fetch(query)
 
@@ -244,6 +245,7 @@ export const SfcProvider = ({ children }) => {
                 phone: item.phone,
                 secondName: item.secondName,
                 telegram: item.telegram,
+                zip: item.zip,
                 user: {
                     walletAddress: item.user.walletAddress
 

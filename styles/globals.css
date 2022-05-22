@@ -40,6 +40,12 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.sub-title {
+    font-size: .7rem;
+    letter-spacing: .5px;
+    color: rgba(199, 198, 198, 0.863);
+    font-weight: 200;
+}
 #logo {
     position: fixed;
     top: 0;
@@ -507,19 +513,68 @@ i {
     font-weight: 300;
 
 }
+.address-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+ 
+   height: 95%;
 
-.adress-section {
-     position: absolute;
-     top: 0;
-     left: 0;
-     width: 80%;
-  
-     min-height: 100%;
-     background-color: #29539b48;
-     background-image: linear-gradient(315deg, #29539b3a 0%, #1e3b702f 74%);
-     backdrop-filter: blur(2rem);
-     color: white;
+    background-color: #29539b48;
+    background-image: linear-gradient(315deg, #29539b3a 0%, #1e3b702f 74%);
+    backdrop-filter: blur(2rem);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  flex-wrap: wrap;
+    position: fixed;
+    
+
 }
-.contact-form {
-    margin-top: 5rem;
+
+@media (max-width:35em) {
+    .address-container {
+        gap: 7rem;
+        padding-block: 10rem;
+        overflow: scroll;
+    }
+}
+.adress-section {
+    
+     
+     display: grid;
+     place-content: center;
+     width: 20rem;
+}
+.adress-list {
+    width: 20rem;
+}
+.address-item-cont{
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 3rem;
+
+   
+
+}
+.address-cart {
+    background-color: var(--dark-color-medium);
+    padding: 1em 1.3em;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    
+
+
+}
+.item-p {
+    color:var(--light-color);
+        font-size: .6rem;
+        padding-right: .5rem;
+        flex: 1;
+        letter-spacing: .4px;
+        font-weight: 200;
 }

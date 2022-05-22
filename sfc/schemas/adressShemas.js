@@ -27,6 +27,12 @@ export const addressShema = {
             
         },
         {
+            name: 'zip',
+            title: 'Zipcode',
+            type: 'string',
+            
+        },
+        {
             name: 'fetchId',
             title: 'fetchId',
             type: 'string',

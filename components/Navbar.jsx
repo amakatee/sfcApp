@@ -37,7 +37,7 @@ export default function Navbar() {
                            <i className="nav__link active__link" ><CgHome size={20} color="fff" /></i>
               
                    </li>
-                   <li  onClick={() => {router.push(`/package/?mint=${currentAccount}`)}} className="nav__item">
+                   <li  onClick={() => {router.push(`/package`)}} className="nav__item">
      
                            <i className="nav__link active__link"><GoPackage size={20} color="fff" /></i>
                      

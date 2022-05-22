@@ -10,7 +10,8 @@ import {AiOutlinePlus} from 'react-icons/ai'
 import {GrClose} from 'react-icons/gr'
 import { client } from '../../lib/client'
 import { nanoid } from 'nanoid'
-
+import AddressItem from '../../components/AddressItem'
+import SmallAddressItem from '../../components/SmallAddressItem'
 
 
 
@@ -19,6 +20,7 @@ const pending = () => {
   const { register, handleSubmit, reset, errors} = useForm()
   const [showAdress , setShowAdress] = useState(false)
   const [curAddress, setCurrentAdress] = useState({})
+
 
  const st = storageProducts.filter(item => item.user.walletAddress === currentAccount)
    const storage = [...new Set(st)]
@@ -37,7 +39,7 @@ const pending = () => {
     return addressesCurrent.find(item => item.id === id )
   })
 
-
+  const currentChosenAddress = filteredAddresses.find(address => address.id === curAddress) 
 const addressHandler = () => {
   setShowAdress( prev => !prev)
 
@@ -63,6 +65,7 @@ const addressHandler = () => {
     phone:phone,
     timestamp: new Date().toISOString(),
     fetchId: nanoid(),
+    zip,
     user: {
       _key: adressId,
       _type:'reference',
@@ -94,9 +97,7 @@ console.log(curAddress)
   return (
     <>
       <InnerLayout>
-      {filteredAddresses?.map(item => (
-        <div key={item.id}>{item.address}</div>
-      ))}
+     
         <form onSubmit={handleSubmit(onSubmit)}>
     <div className='text-white '>
       <div>
@@ -115,8 +116,11 @@ console.log(curAddress)
         <div className='flex items-center justify-end gap-1 mt-[10px] mr-[20px] cursor-pointer' onClick={addressHandler}>
           <AiOutlinePlus />
           <h1>Add Address</h1>
-
-        </div>
+          
+       </div>
+       <div className='flex items-center justify-end gap-1 mt-[5px] mr-[20px]'>
+          {currentChosenAddress ?  <SmallAddressItem  item={currentChosenAddress}/> : <p className='sub-title'>No address choosen</p>}  
+          </div>
         </div>
       <div className='packages-cont'>
       {filteredAddresses.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : filteredStorage?.map(product => 
@@ -159,18 +163,30 @@ console.log(curAddress)
   
   
   {showAdress &&
-  <div className='adress-section'>
-
-
- 
-    <div className='absolute cursor-pointer top-20 right-10 z-100' >
-    <GrClose color='#ffffff' />
+  <section className='address-container'>
+     <div  className='absolute cursor-pointer top-20 right-10 z-100' >
+    <GrClose color='#ffffff' onClick={() => setShowAdress(false)} />
     </div>
+    <div className='adress-list'>
+    {filteredAddresses?.map(item => (
+      <div className='address-item-cont'>
+         <AddressItem item={item} setCurrentAdress={setCurrentAdress} curAddress={curAddress}/>
+      </div>
+      ))}
+     
+    </div>
+
+
+
+  <div className='adress-section'>
+    
+   
   <form  className="contact-form" onSubmit={handleSubmit(onSubmitAdress)}>
     <Grid container direction='column' alignItems='center' spacing={3}>
       <Grid item  >
         <TextField
         name="name"
+        
         {...register('name')}
         variant="standard"
         sx={{width:"18rem"}}
@@ -263,7 +279,7 @@ console.log(curAddress)
       </Grid>
       <Grid item >
         <TextField
-        variant="outlined"
+        variant="standard"
         name="address"
         {...register("address")}
         sx={{width:"18rem"}}
@@ -272,6 +288,20 @@ console.log(curAddress)
         rows={2}
         required
         color='secondary'
+        >
+
+        </TextField>
+      </Grid>
+      <Grid item>
+        <TextField
+        name='zip'
+        {...register("zip")}
+        variant="standard"
+        
+        sx={{width:"18rem"}}
+        label="Zip Code"
+        color='secondary'
+      
         >
 
         </TextField>
@@ -286,6 +316,7 @@ console.log(curAddress)
 
   </form>
   </div>
+  </section>
   }  
     </>
   )
