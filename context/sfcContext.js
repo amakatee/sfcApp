@@ -14,6 +14,10 @@ export const SfcProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState({})
     const [products, setPackages] = useState([])
     const [storageProducts, setStorageProducts] = useState([])
+    const [paymentPackages, setPaymentPackages] = useState([])
+    const [recieptPackages, setRecieptPackages] = useState([])
+    const [addressesArray, setAdresses] = useState([])
+    
     const router = useRouter()
 
     useEffect(() => {
@@ -25,6 +29,9 @@ export const SfcProvider = ({ children }) => {
         getCurrentUserDetails(currentAccount)
         fetchPackages()
         fetchStorage()
+        fetchPayment()
+        fetchReciept()
+        fetchAdresses()
 
     }, [currentAccount, appStatus])
 
@@ -142,6 +149,7 @@ export const SfcProvider = ({ children }) => {
                 id: item.order,
                 info:item.info,
                 weight: item.weight,
+                checkbool:true,
                 user: {
                    
                     walletAddress: item.user.walletAddress
@@ -150,6 +158,100 @@ export const SfcProvider = ({ children }) => {
             }
             setStorageProducts(prev => [...prev, newItem])
 
+        })
+    }
+    const fetchPayment = async () => {
+        const query = `*[_type == "pendingPayment"]{
+            "user": user->{walletAddress},
+            type,
+            recipient,
+            billing,
+            order,
+            weight
+        }| order(timestamp desc)`
+        const paymentPackages = await client.fetch(query)
+
+        paymentPackages.forEach(async (item) => {
+            const newItem = {
+                id: item.order,
+                recipient: item.recipient,
+                type: item.type,
+                billing: item.billing,
+                weight: item.weight,
+                user: {
+                   
+                    walletAddress: item.user.walletAddress
+                },
+
+
+            }
+            setPaymentPackages(prev => [...prev, newItem])
+        }
+      
+        )
+    }
+
+    const fetchReciept = async () => {
+        const query = `*[_type == "pendingReciept"]{
+            "user":user->{walletAddress},
+            billing,
+            internationalCode,
+            recipient,
+            type,
+            weight,
+            order
+        }`
+
+        const recieptPackages = await client.fetch(query)
+        recieptPackages.forEach( async (item) => {
+            const newItem = {
+                id: item.order,
+                billing: item.billing,
+                internationalCode: item.internationalCode,
+                reciepent: item.reciepent,
+                type: item.type,
+                weight:item.weight,
+                order: item.order,
+                user: {
+                    walletAddress: item.user.walletAddress
+
+                }
+            }
+            setRecieptPackages(prev => [...prev, newItem])
+        })
+    }
+    const fetchAdresses = async () => {
+        const query = `*[_type == "addressShema"] {
+            "user":user->{walletAddress},
+            address,
+            country,
+            email,
+            firstName,
+            phone,
+            secondName,
+            telegram,
+            fetchId,
+        }`
+        const addresses = await client.fetch(query)
+
+        addresses.forEach( async (item) => {
+            const newItem = {
+                id: item.fetchId,
+                address: item.address,
+                country: item.country,
+                email: item.email,
+                firstName: item.firstName,
+                phone: item.phone,
+                secondName: item.secondName,
+                telegram: item.telegram,
+                user: {
+                    walletAddress: item.user.walletAddress
+
+                }
+
+
+            }
+            setAdresses (prev => [...prev, newItem])
         })
     }
 
@@ -161,6 +263,8 @@ export const SfcProvider = ({ children }) => {
         *[_type == "users" && _id == "${userAccount}"]{
             "packages": packages[]->{timestamp, domesticTrack, info}|order(timestamp desc),
             "pendingStorage": pendingStorage[]->{weight, info, order}|order(timestamp desc),
+            "paymentPackages":paymentPackages[]->{weight, type, recipent, billing}|order(timestamp desc),
+            "addressShema": addressShema[]->{address, country, email, secondName, telegram}|order(timestamp desc),
         
             walletAddress
                 }
@@ -173,7 +277,10 @@ export const SfcProvider = ({ children }) => {
         info: response[0].info,
         walletAddress: response[0].walletAddress,
         weight: response[0].weight,
-        order: response[0].order
+        order: response[0].order,
+        type: response[0].type,
+        address: response[0].address
+     
       })
     } 
 
@@ -187,7 +294,12 @@ export const SfcProvider = ({ children }) => {
         fetchPackages,
         currentUser,
         getCurrentUserDetails,
-        storageProducts
+        storageProducts,
+        paymentPackages,
+        recieptPackages,
+        fetchAdresses,
+        addressesArray
+
 
         
     }

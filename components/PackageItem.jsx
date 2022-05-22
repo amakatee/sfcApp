@@ -1,18 +1,33 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {Checkbox} from '@mui/material'
+import {useForm } from 'react-hook-form'
 
 const PackageItem = ({product}) => {
-    console.log(product.recipient)
-    const {domesticTrack, user, recipient, domesticCode, info, type, weight, billing, internationalCode} = product
+
+    const {domesticTrack, user, recipient, domesticCode, info, type, weight, billing, internationalCode, timestamp, checkbool, id} = product
+    const { register, handleSubmit, reset} = useForm()
+  
+
+
+    
   return (
     <div className='item-cont'>
+      {checkbool &&
+       <div>
+         <Checkbox value={checboxVal} name={id}></Checkbox>
+     
+     </div>
+     }
+     
     <div className='item-img'>
       <img width="100px" src='/banner-thumb.png'></img>
     </div>
     <div className='item-desc'>
-        {user && <p>User: <span className='item-span' >{user.walletAddress} </span></p>}
+        {user && <p>User: <span className='item-span' >{user.walletAddress.slice(0,5)} </span></p>}
         {recipient && <p>Recipient: <span className='item-span' >{recipient} </span></p> }
          
         {domesticTrack &&  <p>Track code: <span className='item-span' >{domesticTrack}</span></p>}
+        {timestamp &&  <p>Operated at: <span className='item-span' >{timestamp}</span></p>}
 
 
         {domesticCode &&  <p>Track code: <span className='item-span' >{domesticCode}</span></p>}

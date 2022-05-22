@@ -10,7 +10,7 @@ export const pendingPayment = {
         },
         {
             name: 'order',
-            title: 'order No',
+            title:'order No',
             type: 'string'
         },
         {
@@ -27,6 +27,11 @@ export const pendingPayment = {
             name: 'billing',
             title: 'Billing',
             type: 'string'
+        },
+        {
+            name:'timestamp',
+            title: 'Time Stamp',
+            type: 'datetime'
         },
         {
             name: 'user',

@@ -20,6 +20,11 @@ export const pendingStorage = {
 
         },
         {
+            name:'timestamp',
+            title: 'Time Stamp',
+            type: 'datetime'
+        },
+        {
             name: 'user',
             titile: 'User Infomation',
             type: 'reference',

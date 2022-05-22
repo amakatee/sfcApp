@@ -14,6 +14,7 @@ import { packageShemas } from './packageShemas'
 import {pendingStorage} from './pendingStorage'
 import {pendingPayment} from './pendingPayment'
 import {pendingReciept} from './pendingReciept'
+import {addressShema} from './adressShemas'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -29,6 +30,7 @@ export default createSchema({
     pendingStorage,
     pendingPayment,
     pendingReciept,
+    addressShema
    
     // When added to this list, object types can be used as
     // { type: 'typename' } in other document schemas

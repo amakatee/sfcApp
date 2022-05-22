@@ -39,7 +39,47 @@ export const usersScheme = {
                
 
             ] 
-        }
+        },
+        {
+            name: 'pendingPayment',
+            title: 'Pending Payment',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type:'pendingPayment'}]
+                }
+               
+
+            ] 
+        },
+        {
+            name: 'pendingReciept',
+            title: 'Pending Reciept',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type:'pendingReciept'}]
+                }
+               
+
+            ] 
+        },
+        {
+            name: 'addressShema',
+            title: 'Adresses',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type:'addressShema'}]
+                }
+               
+
+            ] 
+        },
+        
     ]
 }
 // export default {

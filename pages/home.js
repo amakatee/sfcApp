@@ -25,7 +25,7 @@ const HomePage = () => {
   const [phone, setPhone] = useState('19924237889')
   const [zip, setZip] = useState('510540')
 
-  let orderPackage = 0
+
 
   async function onSubmit({track, info}){
     console.log(track, info)
@@ -188,9 +188,9 @@ const HomePage = () => {
    
 
     </div>
-    <div className='flex items-center justify-around max-w-[80vw] mx-auto gap-12 flex-wrap storage-cont '>
+    <div className='flex items-start justify-around max-w-[80vw] mx-auto gap-12 flex-wrap storage-cont '>
       <div className='flex-1 '>
-        <h3 className='section-header-title ml-[-15px]'>Free warehouse storage</h3>
+        <h3 className='section-header-title ml-[0px]'>Free warehouse storage</h3>
         <p className='track-label'>Free warehouse storage for express parcels: 180 days (stock up and send at will)</p> <br />
         <p className='track-label'>Free warehouse storage for finished packages: 90 days (packages that have been packaged)</p>
 

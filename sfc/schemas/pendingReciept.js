@@ -9,6 +9,11 @@ export const pendingReciept = {
             type: 'string'
         },
         {
+            name: 'order',
+            title:'order No',
+            type: 'string'
+        },
+        {
             name: 'internationalCode',
             title: 'International Code',
             type: 'string'
@@ -29,11 +34,17 @@ export const pendingReciept = {
             type: 'string'
         },
         {
+            name:'timestamp',
+            title: 'Time Stamp',
+            type: 'datetime'
+        },
+        {
             name: 'user',
             titile: 'User Infomation',
             type: 'reference',
             to:[{ type: 'users'}]
-        }
+        },
+        
         
     ]
 }
