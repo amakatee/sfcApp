@@ -18,6 +18,7 @@ const pending = () => {
   const {storageProducts, currentAccount, fetchAdresses, addressesArray} = useContext(SfcContext)
   const { register, handleSubmit, reset, errors} = useForm()
   const [showAdress , setShowAdress] = useState(false)
+  const [curAddress, setCurrentAdress] = useState({})
 
  const st = storageProducts.filter(item => item.user.walletAddress === currentAccount)
    const storage = [...new Set(st)]
@@ -83,12 +84,13 @@ const addressHandler = () => {
       }
     ]).commit()
     fetchAdresses()
+    setCurrentAdress(addressDoc)
 
     reset()
-    setShowAdress(false)
+    // setShowAdress(false)
   }
 
-console.log(filteredAddresses)
+console.log(curAddress)
   return (
     <>
       <InnerLayout>
@@ -160,11 +162,7 @@ console.log(filteredAddresses)
   <div className='adress-section'>
 
 
-    <div>
-      {addressesArray?.map(item => (
-        <div key={item.id}>{item.address}</div>
-      ))}
-    </div>
+ 
     <div className='absolute cursor-pointer top-20 right-10 z-100' >
     <GrClose color='#ffffff' />
     </div>
