@@ -149,6 +149,7 @@ export const SfcProvider = ({ children }) => {
                 id: item.order,
                 info:item.info,
                 weight: item.weight,
+                order: item.order,
                 checkbool:true,
                 user: {
                    

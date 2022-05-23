@@ -15,6 +15,7 @@ import {pendingStorage} from './pendingStorage'
 import {pendingPayment} from './pendingPayment'
 import {pendingReciept} from './pendingReciept'
 import {addressShema} from './adressShemas'
+import { storageOrders } from './StorageOrders'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -28,6 +29,7 @@ export default createSchema({
     usersScheme,
     packageShemas,
     pendingStorage,
+    storageOrders,
     pendingPayment,
     pendingReciept,
     addressShema

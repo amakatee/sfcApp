@@ -1,14 +1,21 @@
-import React from 'react'
-import { Checkbox } from '@mui/material'
+import React, {useState} from 'react'
+import { Checkbox, Radio  } from '@mui/material'
 
-const AddressItem = ({item, curAddress, setCurrentAdress}) => {
-  const {firstName, secondName, address, country, telegram, email, phone, timestamp, zip, id} = item
-  
-  return (
+const AddressItem = ({item, curAddress, setCurrentAdress,setShowAdress }) => {
+  const {firstName, secondName, address, country,telegram, email, phone, timestamp, zip, id} = item
+
+ const handleClick = (id) => {
+  setCurrentAdress(id)
+  setShowAdress(false)
+
+ }
  
   
-    <div className='address-cart mb-[15px] '>
-    <Checkbox onChange={() => setCurrentAdress(id)} />
+  return (
+  
+  
+    <div onClick={() => handleClick(id)}  className='address-cart mb-[15px] cursor-pointer '>
+    {/* <Checkbox checked={isChecked.checked} value={true} name={id}  onChange={(e) => handleChange(e, id)} /> */}
     <div>
       {firstName &&  <p className="item-p">First Name: <span className='item-span' >{firstName} </span> </p>}
       {secondName &&  <p className="item-p">Second Name: <span className='item-span' >{secondName} </span> </p>}

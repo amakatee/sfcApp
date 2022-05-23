@@ -1,6 +1,5 @@
 import React,{useEffect, useState} from 'react'
 import InnerLayout from '../../components/InnerLayout'
-import PackageItem from '../../components/PackageItem'
 import { useContext } from 'react'
 import { SfcContext } from '../../context/sfcContext'
 import {  Button } from '@mui/material'
@@ -12,6 +11,7 @@ import { client } from '../../lib/client'
 import { nanoid } from 'nanoid'
 import AddressItem from '../../components/AddressItem'
 import SmallAddressItem from '../../components/SmallAddressItem'
+
 
 
 
@@ -31,7 +31,7 @@ const pending = () => {
   const filteredStorage = filteredId.map(id => {
     return storage.find(item => item.id ===id)
   })
-  console.log(addressesArray)
+
   const addressesCurrent  = addressesArray?.filter(item => item.user.walletAddress === currentAccount)
   const addressIds = addressesCurrent.map(item => item.id)
   const uniqAdId = [...new Set(addressIds)]
@@ -47,9 +47,39 @@ const addressHandler = () => {
 
 
 
-  const onSubmit = (data) => {
-     alert(JSON.stringify(data))
-}
+  async function onSubmit({product}) {
+    const pr = `${JSON.stringify(product)}`
+    console.log(`${JSON.stringify(product)}`)
+    console.log(currentChosenAddress.country)
+    const stotageId = `${currentAccount}_${Date.now()}`
+    const storageOrderDoc = {
+      _type:'srorageOrders',
+      _id: stotageId,
+      packInfo: pr,
+      address: currentChosenAddress,
+      timestamp: new Date().toISOString(),
+      user: {
+        _key: stotageId,
+        _type:'reference',
+        _ref: currentAccount,
+
+      }
+     }
+     await client.createIfNotExists(storageOrderDoc)
+     await client
+     .patch(currentAccount)
+     .setIfMissing({srorageOrders: []})
+     .insert('after', 'srorageOrders[-1]', [
+       {_key: stotageId,
+         _type:'reference',
+         _ref: stotageId
+       }
+     ]).commit()
+
+
+  }
+
+
   const onSubmitAdress = async (data) => {
     const {address, email, country, familyName, name, telegram, phone} = data
     const adressId = `${currentAccount}_${Date.now()}`
@@ -63,6 +93,7 @@ const addressHandler = () => {
     telegram:telegram,
     email: email,
     phone:phone,
+    order:order,
     timestamp: new Date().toISOString(),
     fetchId: nanoid(),
     zip,
@@ -93,7 +124,12 @@ const addressHandler = () => {
     // setShowAdress(false)
   }
 
-console.log(curAddress)
+
+   
+
+// })
+
+
   return (
     <>
       <InnerLayout>
@@ -102,15 +138,7 @@ console.log(curAddress)
     <div className='text-white '>
       <div>
       <div className='flex items-center gap-1 flex-start'>
-       
-        {/* <Checkbox 
-        
-         name="selectAll"
-         id="selectAll"
-        //  handleClick={handleSelectAll}
-        //  isChecked={isCheckAll}
-        ></Checkbox> */}
-       
+    
         
         </div>
         <div className='flex items-center justify-end gap-1 mt-[10px] mr-[20px] cursor-pointer' onClick={addressHandler}>
@@ -128,9 +156,9 @@ console.log(curAddress)
            <div className='mr-[10px]'>
              
              <Checkbox
-             value={`(Product: ${product.weight}  ${product.info} ${product.user.walletAddress})`} 
-             name={product.id}
-             {...register(product.id)}
+             value={[product.order, product.weight, product.user.walletAddress]} 
+             name="product"
+             {...register('product')}
              />
 
       
@@ -143,6 +171,7 @@ console.log(curAddress)
             {product.user && <p>User: <span className='item-span' >{product.user.walletAddress.slice(0,5)} </span></p>}
             {product.weight &&  <p>Weight: <span className='item-span' >{product.weight}</span></p>}
             {product.info &&  <p>Info: <span className='item-span' >{product.info} </span> </p>}
+            {product.order &&  <p>Order No: <span className='item-span' >{product.order} </span> </p>}
 
            
                </div>
@@ -152,9 +181,9 @@ console.log(curAddress)
         )}
         
       </div>
-    
+      <div className='flex justify-end mr-[10px]'><Button  type='submit'> Continiu</Button></div>
     </div>
-    <div className='flex justify-end mr-[10px]'><Button  type='submit'> Continiu</Button></div>
+  
     </form>
     
     </InnerLayout>
@@ -170,7 +199,7 @@ console.log(curAddress)
     <div className='adress-list'>
     {filteredAddresses?.map(item => (
       <div className='address-item-cont'>
-         <AddressItem item={item} setCurrentAdress={setCurrentAdress} curAddress={curAddress}/>
+         <AddressItem item={item} setCurrentAdress={setCurrentAdress} setShowAdress={setShowAdress} curAddress={curAddress} />
       </div>
       ))}
      
