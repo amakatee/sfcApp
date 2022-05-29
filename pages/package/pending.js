@@ -16,10 +16,14 @@ import SmallAddressItem from '../../components/SmallAddressItem'
 
 
 const pending = () => {
-  const {storageProducts, currentAccount, fetchAdresses, addressesArray} = useContext(SfcContext)
+  const {storageProducts, currentAccount, fetchAddresses, addressesArray} = useContext(SfcContext)
   const { register, handleSubmit, reset, errors} = useForm()
   const [showAdress , setShowAdress] = useState(false)
   const [curAddress, setCurrentAdress] = useState({})
+  const [showAddresesList, setShowAddressesList ] = useState(false)
+  const [submited, setSubmited] = useState()
+  const [submittedProduct, setSubmitedProduct] = useState(false)
+
 
 
  const st = storageProducts.filter(item => item.user.walletAddress === currentAccount)
@@ -28,16 +32,18 @@ const pending = () => {
   const filteredId = [...new Set(ids)]
   
 
-  const filteredStorage = filteredId.map(id => {
+  const fStorage = filteredId.map(id => {
     return storage.find(item => item.id ===id)
   })
+  const [filteredStorage , setFilteredStorage] = useState(fStorage)
 
   const addressesCurrent  = addressesArray?.filter(item => item.user.walletAddress === currentAccount)
   const addressIds = addressesCurrent.map(item => item.id)
   const uniqAdId = [...new Set(addressIds)]
-  const filteredAddresses = uniqAdId.map(id => {
+  const fAdress = uniqAdId.map(id => {
     return addressesCurrent.find(item => item.id === id )
   })
+  const [filteredAddresses, setFilteredAddreses] = useState(fAdress)
 
   const currentChosenAddress = filteredAddresses.find(address => address.id === curAddress) 
 const addressHandler = () => {
@@ -45,18 +51,36 @@ const addressHandler = () => {
 
 }
 
+useEffect(() => {
+  let timer = setTimeout(() => setSubmited(false) , 1000)
+
+  return () => clearTimeout(timer)
+  
+
+},[submited])
+useEffect(() => {
+  let timer = setTimeout(() => setSubmitedProduct(false) , 3000)
+
+  return () => clearTimeout(timer)
+  
+
+},[submittedProduct])
+
+
 
 
   async function onSubmit({product}) {
     const pr = `${JSON.stringify(product)}`
+    const cr = `${JSON.stringify(currentChosenAddress)}`
     console.log(`${JSON.stringify(product)}`)
-    console.log(currentChosenAddress.country)
+    console.log(cr)
     const stotageId = `${currentAccount}_${Date.now()}`
     const storageOrderDoc = {
-      _type:'srorageOrders',
+      _type:'storageOrders',
       _id: stotageId,
+     
       packInfo: pr,
-      address: currentChosenAddress,
+      address: cr,
       timestamp: new Date().toISOString(),
       user: {
         _key: stotageId,
@@ -76,12 +100,28 @@ const addressHandler = () => {
        }
      ]).commit()
 
+ 
 
+     setSubmited(true)
+     setSubmitedProduct(true)
+    
+  
+  const filteredId = filteredStorage.map(i => i.id)
+   const similaritiy = filteredId.filter(x=> !product.includes(x))
+   console.log(similaritiy)
+  
+  
+   const items = similaritiy.map(s => {
+     return filteredStorage.find(storage => storage.id === s)
+   })
+
+     setFilteredStorage(items)
+   
   }
 
 
   const onSubmitAdress = async (data) => {
-    const {address, email, country, familyName, name, telegram, phone} = data
+    const {address, email, country, familyName, name, telegram, phone, zip} = data
     const adressId = `${currentAccount}_${Date.now()}`
     const addressDoc = {
     _type: "addressShema",
@@ -93,7 +133,6 @@ const addressHandler = () => {
     telegram:telegram,
     email: email,
     phone:phone,
-    order:order,
     timestamp: new Date().toISOString(),
     fetchId: nanoid(),
     zip,
@@ -117,10 +156,14 @@ const addressHandler = () => {
         _ref: adressId
       }
     ]).commit()
-    fetchAdresses()
-    setCurrentAdress(addressDoc)
-
     reset()
+    setFilteredAddreses([...filteredAddresses, addressDoc ])
+    await fetchAddresses()
+    console.log(filteredAddresses)
+    setShowAddressesList(true)
+   
+
+   
     // setShowAdress(false)
   }
 
@@ -132,6 +175,7 @@ const addressHandler = () => {
 
   return (
     <>
+     {submited ? <span className='copy-alert glass-background '>Submited</span> : null}
       <InnerLayout>
      
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -141,11 +185,18 @@ const addressHandler = () => {
     
         
         </div>
-        <div className='flex items-center justify-end gap-1 mt-[10px] mr-[20px] cursor-pointer' onClick={addressHandler}>
+        <div className='flex items-center  justify-end gap-10 mt-[10px] mr-[20px] cursor-pointer'>
+          <div className='flex items-center '  onClick={addressHandler}>
           <AiOutlinePlus />
-          <h1>Add Address</h1>
+          <h1>   Add Address</h1>
+          </div>
+          {/* <div onClick={() => setShowAddressesList(true)}>
+          <h1>Choose Existing</h1>
+          </div> */}
+         
           
        </div>
+   
        <div className='flex items-center justify-end gap-1 mt-[5px] mr-[20px]'>
           {currentChosenAddress ?  <SmallAddressItem  item={currentChosenAddress}/> : <p className='sub-title'>No address choosen</p>}  
           </div>
@@ -156,7 +207,7 @@ const addressHandler = () => {
            <div className='mr-[10px]'>
              
              <Checkbox
-             value={[product.order, product.weight, product.user.walletAddress]} 
+             value={product.order} 
              name="product"
              {...register('product')}
              />
@@ -175,28 +226,41 @@ const addressHandler = () => {
 
            
                </div>
-   
+               
         </div>)
         
         )}
         
       </div>
       <div className='flex justify-end mr-[10px]'><Button  type='submit'> Continiu</Button></div>
+     
     </div>
   
     </form>
-    
-    </InnerLayout>
+    {submittedProduct ? <span className='copy-alert glass-background '>Thank you for your order! Processing time 1-12 hours! We will contact you via email. </span> : null}
 
+    </InnerLayout>
+  
    {/* Form */}
   
-  
+
+
   {showAdress &&
   <section className='address-container'>
      <div  className='absolute cursor-pointer top-20 right-10 z-100' >
     <GrClose color='#ffffff' onClick={() => setShowAdress(false)} />
     </div>
-    <div className='adress-list'>
+    {/* <div className='adress-list'>
+    {filteredAddresses?.map(item => (
+      <div className='address-item-cont'>
+         <AddressItem item={item} setCurrentAdress={setCurrentAdress} setShowAdress={setShowAdress} curAddress={curAddress} />
+      </div>
+      ))}
+     
+    </div> */}
+
+  <div>
+  <div className='adress-list'>
     {filteredAddresses?.map(item => (
       <div className='address-item-cont'>
          <AddressItem item={item} setCurrentAdress={setCurrentAdress} setShowAdress={setShowAdress} curAddress={curAddress} />
@@ -204,6 +268,8 @@ const addressHandler = () => {
       ))}
      
     </div>
+    </div>
+
 
 
 
@@ -353,11 +419,23 @@ const addressHandler = () => {
 
 export default pending
 
-// export const getServerSideProps = async () => {
-//   const query = "*[_type == 'pendingStorage']"
-//   const products = await client.fetch(query)
-//   console.log(products)
-//   return {
-//     props: {products}
-//   }
-// }
+export const getServerSideProps = async () => {
+  const query =  `*[_type == "addressShema"] {
+    "user":user->{walletAddress},
+    address,
+    country,
+    email,
+    firstName,
+    phone,
+    secondName,
+    telegram,
+    fetchId,
+    order,
+    zip
+}`
+  const products = await client.fetch(query)
+  console.log(products)
+  return {
+    props: {products}
+  }
+}

@@ -14,12 +14,14 @@ export const storageOrders = {
         {
             name: 'address',
             title:'Adress',
-            type: 'array',
-            of: [
-                {
-                    type:'block'
-                }
-            ]
+            type: 'string',
+            
+            
+        },
+        {
+            name:'timestamp',
+            title: 'Time Stamp',
+            type: 'datetime'
         },
         {
             name: 'user',

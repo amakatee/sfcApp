@@ -470,7 +470,7 @@ i {
     border-radius: 1rem;
     margin-inline:auto;
     color: white;
-    height: 30rem;
+    min-height: 30rem;
 
 
     
@@ -483,7 +483,7 @@ i {
     padding-top: 1rem;
     display: flex;
     flex-direction: column;
-    height: 20rem;
+    height: 23rem;
     overflow-y: scroll;
     gap:1rem;
     padding-bottom: 4rem;
@@ -530,6 +530,7 @@ i {
     justify-content: space-around;
   flex-wrap: wrap;
     position: fixed;
+    overflow-y: scroll;
     
 
 }

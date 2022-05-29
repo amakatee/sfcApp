@@ -25,15 +25,16 @@ export const SfcProvider = ({ children }) => {
     }, [])
 
     useEffect(()=>{
-        if(!currentAccount && appStatus =='connected') return 
+        if(!currentAccount && appStatus ==='connected') return 
         getCurrentUserDetails(currentAccount)
         fetchPackages()
         fetchStorage()
         fetchPayment()
         fetchReciept()
-        fetchAdresses()
+        fetchAddresses()
 
     }, [currentAccount, appStatus])
+ 
 
     const checkIfWalletIsConnected = async  () => {
         if(!window.ethereum) return setAppStatus('noMetaMask')
@@ -221,7 +222,7 @@ export const SfcProvider = ({ children }) => {
             setRecieptPackages(prev => [...prev, newItem])
         })
     }
-    const fetchAdresses = async () => {
+    const fetchAddresses = async () => {
         const query = `*[_type == "addressShema"] {
             "user":user->{walletAddress},
             address,
@@ -232,6 +233,7 @@ export const SfcProvider = ({ children }) => {
             secondName,
             telegram,
             fetchId,
+            order,
             zip
         }`
         const addresses = await client.fetch(query)
@@ -245,6 +247,7 @@ export const SfcProvider = ({ children }) => {
                 firstName: item.firstName,
                 phone: item.phone,
                 secondName: item.secondName,
+                order:item.order,
                 telegram: item.telegram,
                 zip: item.zip,
                 user: {
@@ -300,7 +303,7 @@ export const SfcProvider = ({ children }) => {
         storageProducts,
         paymentPackages,
         recieptPackages,
-        fetchAdresses,
+        fetchAddresses,
         addressesArray
 
 
