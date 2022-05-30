@@ -190,9 +190,7 @@ useEffect(() => {
           <AiOutlinePlus />
           <h1>   Add Address</h1>
           </div>
-          {/* <div onClick={() => setShowAddressesList(true)}>
-          <h1>Choose Existing</h1>
-          </div> */}
+          
          
           
        </div>
@@ -232,7 +230,7 @@ useEffect(() => {
         )}
         
       </div>
-      <div className='flex justify-end mr-[10px]'><Button  type='submit'> Continiu</Button></div>
+      <div className='flex justify-end mr-[10px]'><Button  type='submit'> Submit</Button></div>
      
     </div>
   

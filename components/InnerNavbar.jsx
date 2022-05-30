@@ -9,7 +9,7 @@ const InnerNavbar = ({initialSelected = 'Domestic Package'}) => {
     const [selected, setSelected] = useState(initialSelected)
 
   return (
-    <div className='flex content-center justify-around gap-8 max-w-[400px] mx-auto text-white inner-nav'>
+    <div className='flex content-center cursor-pointer justify-around gap-8 max-w-[400px] mx-auto text-white inner-nav'>
           <InnerNavComp
           text="Domestic Package"
           isActive={Boolean(selected==="Domestic Package")}

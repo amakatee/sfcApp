@@ -8,6 +8,11 @@ import {FaEthereum} from 'react-icons/fa'
 import { useRouter } from 'next/router'
 import { SfcContext } from '../context/sfcContext'
 import { useContext } from 'react'
+import {AiFillHome} from 'react-icons/ai'
+import {FaBox} from 'react-icons/fa'
+import {AiOutlineAlipay} from 'react-icons/ai'
+import {AiOutlineAlipayCircle, AiOutlineUser} from 'react-icons/ai'
+
 
 
 
@@ -32,28 +37,28 @@ export default function Navbar() {
 
                   
 
-                   <li onClick={() => {router.push(`/home/?mint=${currentAccount}`)}} className="nav__item">
+                   <li onClick={() => {router.push(`/home`)}} className="nav__item">
             
-                           <i className="nav__link active__link" ><CgHome size={20} color="fff" /></i>
+                           <i className="nav__link active__link" > {router.asPath === `/home` ? <AiFillHome size={21} /> : <CgHome size={20} color="fff" />}</i>
               
                    </li>
                    <li  onClick={() => {router.push(`/package`)}} className="nav__item">
      
-                           <i className="nav__link active__link"><GoPackage size={20} color="fff" /></i>
+                           <i className="nav__link active__link">{ router.asPath === `/package` ? <FaBox /> : <GoPackage size={20} color="fff" />}</i>
                      
                    </li>
 
                
 
-                   <li className="nav__item">
+                   <li  onClick={() => {router.push(`/payment`)}} className="nav__item">
                        <Link href="" className="nav__link active__link">
-                           <i className="nav__link active__link"><FaEthereum size={20} color='fff' /></i>
+                           <i className="nav__link active__link">{ router.asPath === `/payment` ? <AiOutlineAlipayCircle size={20} /> : <AiOutlineAlipay size={21} color='fff' /> }</i>
                        </Link>
                    </li>
 
-                   <li className="nav__item">
+                   <li  onClick={() => {router.push(`/profile`)}}  className="nav__item">
                        <Link href="" className="nav__link active__link">
-                           <i ><BsFillPersonFill size={20} color="fff" /></i>
+                           <i >{ router.asPath === `/profile` ? <BsFillPersonFill size={20} color="fff" /> : <AiOutlineUser size={20} />}</i>
                        </Link>
                    </li>
 

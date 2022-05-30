@@ -16,6 +16,8 @@ import {pendingPayment} from './pendingPayment'
 import {pendingReciept} from './pendingReciept'
 import {addressShema} from './adressShemas'
 import { storageOrders } from './StorageOrders'
+import {storagePayments} from './storagePayments'
+import {transactionsShema} from './transactionsShema'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -27,10 +29,12 @@ export default createSchema({
     // The following are document types which will appear
     // in the studio.
     usersScheme,
+    transactionsShema,
     packageShemas,
     pendingStorage,
     storageOrders,
     pendingPayment,
+    storagePayments,
     pendingReciept,
     addressShema
    

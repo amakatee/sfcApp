@@ -15,6 +15,20 @@ export const usersScheme = {
             type: 'string'
         },
         {
+            name: 'transactions',
+            title: 'Transactions',
+            type: 'array',
+            of: [
+                {
+                    type:'reference',
+                    to:[{ type: 'transactions'}],
+                }
+
+            ]
+
+        },
+
+        {
             name: 'packages',
             title: 'Packages',
             type: 'array',

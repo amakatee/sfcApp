@@ -9,6 +9,7 @@ import { nanoid } from "nanoid";
 export const SfcContext = createContext()
 
 export const SfcProvider = ({ children }) => {
+    const [choosenItems, setChoosenItemsAmount] = useState([])
     const [appStatus, setAppStatus ] = useState('loading')
     const [currentAccount, setCurrentAccount] = useState('')
     const [currentUser, setCurrentUser] = useState({})
@@ -180,6 +181,7 @@ export const SfcProvider = ({ children }) => {
                 type: item.type,
                 billing: item.billing,
                 weight: item.weight,
+                order:item.order,
                 user: {
                    
                     walletAddress: item.user.walletAddress
@@ -304,7 +306,9 @@ export const SfcProvider = ({ children }) => {
         paymentPackages,
         recieptPackages,
         fetchAddresses,
-        addressesArray
+        addressesArray,
+        setChoosenItemsAmount,
+        choosenItems
 
 
         

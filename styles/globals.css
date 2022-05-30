@@ -24,7 +24,9 @@ body {
 
 .nav__item {
     cursor: pointer;
+   
 }
+
 .empty-cont-span {
     display: grid;
     place-content: center;
@@ -68,7 +70,7 @@ body {
 
 }  
 .copy-alert {
-   background-color: blue;
+ 
    width: 12rem;
    border-radius: 1rem;
    aspect-ratio: 1.5 / .8;
@@ -578,4 +580,44 @@ i {
         flex: 1;
         letter-spacing: .4px;
         font-weight: 200;
+}
+
+.payment-section  {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+}
+.payment-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    border-radius: 1rem;
+    
+
+
+}
+.pay-input-cont {
+    max-width: 20rem;
+    padding-top: .5rem;
+    min-width: 19rem;
+}
+.pay-input {
+    width: 18rem;
+    background-color: transparent ;
+    outline: none;
+    padding: 1rem;
+    font-size: 1rem;
+    letter-spacing: .9px;
+    font-weight: 300;
+   
+}
+.pay-confirm {
+    text-align: center;
+    cursor: pointer;
+    margin: 2rem;
+    
+
+
 }
