@@ -69,9 +69,11 @@ const payment = () => {
   
 
 
-
- 
-  setProducts(items)
+      
+       setChoosenItemsAmount(product)
+       console.log(choosenItems)
+      setProducts(items)
+      router.push('/payment')
 
   
   // const unsimilaritiy = filteredId.filter(x=> product.includes(x))
@@ -79,7 +81,7 @@ const payment = () => {
   //  const nonitems = unsimilaritiy.map(s => {
   //    return products.find(p => p.id === s)
   //  })
-  //  setChoosenItemsAmount(nonitems)
+   
 
   }
   
@@ -114,7 +116,7 @@ const payment = () => {
             <div className='item-desc'>
             {product.user && <p>User: <span className='item-span' >{product.user.walletAddress.slice(0,5)} </span></p>}
             {product.recipient && <p>Recipient: <span className='item-span' >{product.recipient} </span></p> }
-            {product.billing && <p>Billing: <span className='item-span' >{product.billing} </span></p>}
+            {product.billing && <p>Billing: <span className='item-span' >{product.billing}$ </span></p>}
             {product.type &&  <p>Type: <span className='item-span' > {product.type} </span> </p>}
 
             {product.weight &&  <p>Weight: <span className='item-span' >{product.weight}</span></p>}
@@ -129,7 +131,7 @@ const payment = () => {
       )}
       </div>
       
-      <div onClick={() => {router.push('/payment')}} className='flex justify-end mr-[10px]'><Button  type='submit'> Proceed Payment</Button></div>
+      <div className='flex justify-end mr-[10px]'><Button  type='submit'> Proceed Payment</Button></div>
 
     </div>
     </form>

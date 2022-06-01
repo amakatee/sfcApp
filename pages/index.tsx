@@ -34,14 +34,15 @@ const Home: NextPage = () => {
   }
 
   const userLoggedIn = (
-    <div >Logged In</div>
+    <div className='login-mask' >Logged In</div>
     
   )
   const  noUserFound = (
-    <div >
+    <div className='connect-meta' >
       <h1
       onClick={() => connectWallet()}
-      >Connect Wallet</h1>
+      >
+       Connect Wallet</h1>
      
 
     </div>
@@ -49,7 +50,7 @@ const Home: NextPage = () => {
   )
 
   const moMetaMaskFound = (
-    <div >
+    <div className='install-mask' >
       You Must Install Meta Mask :)
     </div>
 
@@ -59,7 +60,9 @@ const Home: NextPage = () => {
   )
   const loading = (
     <div > 
-      Loading ...
+    Loading ...
+
+
     </div>
   )
   return ( 

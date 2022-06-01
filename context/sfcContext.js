@@ -71,7 +71,7 @@ export const SfcProvider = ({ children }) => {
             })
             if(addressArray > 0) {
                 setCurrentAccount(addressArray[0])
-                router.push('/home')
+              
             } else {
                 router.push('/')
                 setAppStatus('notConnected')
@@ -292,6 +292,8 @@ export const SfcProvider = ({ children }) => {
       })
     } 
 
+
+
     return (
        <SfcContext.Provider 
        value={{ 
@@ -308,7 +310,8 @@ export const SfcProvider = ({ children }) => {
         fetchAddresses,
         addressesArray,
         setChoosenItemsAmount,
-        choosenItems
+        choosenItems,
+     
 
 
         
