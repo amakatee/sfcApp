@@ -751,6 +751,8 @@ i {
     display: grid;
     place-content: center;
 }
+@media(max-width:  35em) {
+
 
 .profile {
   
@@ -758,4 +760,5 @@ i {
   text-align: center;
   font-size: .8rem;
     
+}
 }
