@@ -2,11 +2,30 @@ import { createContext,useEffect,useState } from "react";
 import { useRouter } from "next/router";
 import { client } from "../lib/client";
 import { nanoid } from "nanoid";
+import {contractABI, contractAddress} from '../lib/constants'
+import { ethers } from "ethers"
 
 
 
 
 export const SfcContext = createContext()
+
+
+const getEtheriumContract = () => {
+   const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const transactionContract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        signer,
+      
+    )
+    console.log({
+        provider, signer,transactionContract
+    })
+    return transactionContract
+}
+
 
 export const SfcProvider = ({ children }) => {
     const [choosenItems, setChoosenItemsAmount] = useState([])
@@ -18,6 +37,13 @@ export const SfcProvider = ({ children }) => {
     const [paymentPackages, setPaymentPackages] = useState([])
     const [recieptPackages, setRecieptPackages] = useState([])
     const [addressesArray, setAdresses] = useState([])
+
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [formData, setFormData] = useState({
+        addressTo: '',
+        amount: '',
+      })
     
     const router = useRouter()
 
@@ -36,6 +62,8 @@ export const SfcProvider = ({ children }) => {
 
     }, [currentAccount, appStatus])
  
+   
+
 
     const checkIfWalletIsConnected = async  () => {
         if(!window.ethereum) return setAppStatus('noMetaMask')
@@ -48,7 +76,7 @@ export const SfcProvider = ({ children }) => {
                 setAppStatus('connected')
                 setCurrentAccount(addressArray[0])
                 createUserAccount(addressArray[0])
-                router.push('/home')
+                // router.push('/home')
 
             }else {
                 //not connected
@@ -71,6 +99,7 @@ export const SfcProvider = ({ children }) => {
             })
             if(addressArray > 0) {
                 setCurrentAccount(addressArray[0])
+                 router.push('/home')
               
             } else {
                 router.push('/')
@@ -84,6 +113,8 @@ export const SfcProvider = ({ children }) => {
         }
     }
     
+
+
     
     // @param {string} userWalletAddress
     const createUserAccount = async (userWalletAddress = currentAccount) => {
@@ -107,6 +138,98 @@ export const SfcProvider = ({ children }) => {
 
     }
 
+    const saveTransaction = async (
+        txHash,
+        amount,
+        fromAddress = currentAccount,
+        toAddress,
+
+    ) => {
+        const txDoc = {
+            _type: 'transactions',
+            _id: txHash,
+            fromAddress: fromAddress,
+            toAddress: toAddress,
+            timestamp: new Date(Date.now()).toISOString(),
+            txHash: txHash,
+            amount: parseFloat(amount)
+
+
+        }
+        await client.createIfNotExists(txDoc)
+
+
+        await client
+           .patch(currentAccount)
+           .setIfMissing({ transactions: [] })
+           .insert('after', 'transactions[-1]', [
+               {
+                   _key: txHash,
+                   _ref: txHash,
+                   type: 'reference'
+               }
+           ])
+           .commit()
+       
+        return   
+
+    }
+
+
+    const sendTransaction = async (
+        metamask = window.ethereum, 
+        connectedAccount = currentAccount
+        ) => {
+            try{
+                if(!metamask) return alert('Please install metamask')
+                const {addressTo, amount } = formData
+                const transactionContract = getEtheriumContract()
+                const parsedAmount = ethers.utils.parseEther(amount)
+                await metamask.request({
+                    method: 'eth_sendTransaction',
+                    params: [
+                        {
+                            from: connectedAccount,
+                            to: addressTo,
+                            gas: '0x7EF40', 
+                            value: parsedAmount._hex,
+
+                        }
+                    ]
+                })
+                const transactionHash = await transactionContract.publishTransactions(
+                    addressTo,
+                    parsedAmount,
+                    `Transferring ETH ${parsedAmount} to ${addressTo}`,
+                    'TRANSFER',
+                )
+                
+               
+                setIsLoading(true)
+               
+                await transactionHash.wait()
+            
+
+                await saveTransaction(
+                    transactionHash.hash,
+                    amount,
+                    connectedAccount,
+                    addressTo,
+                  )
+                setIsLoading(false)
+            } catch(err){
+                console.log(err)
+            }
+       
+        
+    }
+   
+
+    const handleChange = (e, name) => {
+        setFormData((prevState) => ({...prevState, [name]: e.target.value}))
+    }
+
+  
     const fetchPackages = async () => {
         const query = `
         *[_type == 'packages']{
@@ -291,7 +414,8 @@ export const SfcProvider = ({ children }) => {
      
       })
     } 
-
+    
+  
 
 
     return (
@@ -311,7 +435,11 @@ export const SfcProvider = ({ children }) => {
         addressesArray,
         setChoosenItemsAmount,
         choosenItems,
-     
+        
+        sendTransaction,
+        handleChange,
+        formData
+
 
 
         

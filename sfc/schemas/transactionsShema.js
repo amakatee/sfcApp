@@ -15,6 +15,11 @@ export const transactionsShema = {
              type:'string'
          },
          {
+            name: 'toAddress',
+            title: 'To(Wallet Adress)',
+            type:'string'
+        },
+         {
              name: 'amount',
              title: 'Amount',
              type: 'number',

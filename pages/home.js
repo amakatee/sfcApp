@@ -74,7 +74,7 @@ const HomePage = () => {
 
 
   useEffect(() => {
-    let timer = setTimeout(() => setCopied(false) , 1000)
+    let timer = setTimeout(() => setCopied(false) , 1500)
 
     return () => clearTimeout(timer)
     
@@ -82,7 +82,7 @@ const HomePage = () => {
   },[copied])
 
   useEffect(() => {
-    let timer = setTimeout(() => setSubmited(false) , 1000)
+    let timer = setTimeout(() => setSubmited(false) , 1500)
 
     return () => clearTimeout(timer)
     
@@ -124,7 +124,7 @@ const HomePage = () => {
           ></input>
           </div>
          <button type="submit" className='button-main' >submit</button>
-         {submited ? <span className='copy-alert glass-background '>Submited</span> : null}
+         {submited ? <span className='copy-alert glass-background '>Submited! package status will be updated in 1-2 minutes</span> : null}
         </div>
         </form>
 
