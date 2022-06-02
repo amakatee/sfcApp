@@ -16,6 +16,8 @@ const reciept = () => {
     return packages.find(item => item.id === id)
   })
 
+  console.log(products)
+
 
   
 

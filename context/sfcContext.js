@@ -337,7 +337,7 @@ export const SfcProvider = ({ children }) => {
                 id: item.order,
                 billing: item.billing,
                 internationalCode: item.internationalCode,
-                reciepent: item.reciepent,
+                recipient: item.reciepent,
                 type: item.type,
                 weight:item.weight,
                 order: item.order,

@@ -4,7 +4,7 @@ import {useForm } from 'react-hook-form'
 
 const PackageItem = ({product}) => {
 
-    const {domesticTrack, user, recipient, domesticCode, info, type, weight, billing, internationalCode, timestamp, checkbool, id} = product
+    const {domesticTrack,recipient, user, reciepent, domesticCode, info, type, weight, billing, internationalCode, timestamp, checkbool, id} = product
     const { register, handleSubmit, reset} = useForm()
   
 
@@ -24,7 +24,9 @@ const PackageItem = ({product}) => {
     </div>
     <div className='item-desc'>
         {user && <p>User: <span className='item-span' >{user.walletAddress.slice(0,5)} </span></p>}
+        {reciepent && <p>Recipient: <span className='item-span' >{reciepent} </span></p> }
         {recipient && <p>Recipient: <span className='item-span' >{recipient} </span></p> }
+
          
         {domesticTrack &&  <p>Track code: <span className='item-span' >{domesticTrack}</span></p>}
         {timestamp &&  <p>Operated at: <span className='item-span' >{timestamp}</span></p>}
