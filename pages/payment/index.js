@@ -21,7 +21,7 @@ const filteredPackages = filteredId.map(id => {
 const items = choosenItems.map(id => {
   return filteredPackages.find(p => p.id === id)
 })
-console.log(items)
+console.log(choosenItems)
 const total = items.reduce((sum, i) => {
   return sum + parseInt(i.billing)
 

@@ -12,6 +12,7 @@ import { client } from '../../lib/client'
 
 
 const payment = () => {
+
  const {paymentPackages, currentAccount, choosenItems, setChoosenItemsAmount} = useContext(SfcContext)
  const router = useRouter()
  const{register, handleSubmit} = useForm()
@@ -19,12 +20,14 @@ const payment = () => {
  const packages = paymentPackages.filter(item => item.user.walletAddress === currentAccount)
 
 
+
  const ids = packages.map(item => item.id)
  const filteredIds = [...new Set(ids)]
- const pr =  filteredIds.map(id=> {
+ const products =  filteredIds.map(id=> {
    return packages.find(item => item.id === id)
  })
- const [products, setProducts] = useState(pr)
+ const [pr, setProducts] = useState(products)
+
  console.log(pr)
  console.log(packages)
  console.log(products)
@@ -60,23 +63,23 @@ const payment = () => {
     
         }
        }
-       await client.createIfNotExists(payOrderDoc)
-       await client
-       .patch(currentAccount)
-       .setIfMissing({storagePayments: []})
-       .insert('after', 'storagePayments[-1]', [
-         {_key: stotageId,
-           _type:'reference',
-           _ref: stotageId
-         }
-       ]).commit()
+      //  await client.createIfNotExists(payOrderDoc)
+      //  await client
+      //  .patch(currentAccount)
+      //  .setIfMissing({storagePayments: []})
+      //  .insert('after', 'storagePayments[-1]', [
+      //    {_key: stotageId,
+      //      _type:'reference',
+      //      _ref: stotageId
+      //    }
+      //  ]).commit()
 
 
   
 
-
+       console.log(product)
       
-       setChoosenItemsAmount(product)
+       setChoosenItemsAmount(prev => [...prev, product])
        console.log(choosenItems)
       setProducts(items)
       router.push('/payment')
@@ -101,7 +104,7 @@ const payment = () => {
       
       <div className='packages-cont'>
      
-      { products.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : products?.map(product => (
+      { pr.length < 1 ? <div className='empty-cont-span'>No Products Yet</div> : pr?.map(product => (
       
       // <PackageItem  key={product.id} product={product}/>
       <div className='item-cont'>
