@@ -276,12 +276,14 @@ export const SfcProvider = ({ children }) => {
                 weight: item.weight,
                 order: item.order,
                 checkbool:true,
+             
                 user: {
                    
                     walletAddress: item.user.walletAddress
                 },
            
             }
+           
             setStorageProducts(prev => [...prev, newItem])
 
         })
@@ -295,9 +297,9 @@ export const SfcProvider = ({ children }) => {
             order,
             weight
         }| order(timestamp desc)`
-        const paymentPackages = await client.fetch(query)
+        const paymentPackage = await client.fetch(query)
 
-        paymentPackages.forEach(async (item) => {
+        paymentPackage.forEach(async (item) => {
             const newItem = {
                 id: item.order,
                 recipient: item.recipient,
@@ -317,7 +319,7 @@ export const SfcProvider = ({ children }) => {
       
         )
     }
-
+    console.log(paymentPackages)
     const fetchReciept = async () => {
         const query = `*[_type == "pendingReciept"]{
             "user":user->{walletAddress},

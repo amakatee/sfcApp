@@ -30,6 +30,7 @@ const pending = () => {
    const storage = [...new Set(st)]
   const ids = storage.map(stor => stor.id)
   const filteredId = [...new Set(ids)]
+  console.log(storageProducts)
   
 
   const fStorage = filteredId.map(id => {

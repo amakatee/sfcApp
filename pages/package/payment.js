@@ -16,13 +16,19 @@ const payment = () => {
  const router = useRouter()
  const{register, handleSubmit} = useForm()
  const [submittedProduct, setSubmittedProduct] = useState(false)
- const packages = paymentPackages.filter(item => item.user.walletAddress = currentAccount)
+ const packages = paymentPackages.filter(item => item.user.walletAddress === currentAccount)
+
+
  const ids = packages.map(item => item.id)
  const filteredIds = [...new Set(ids)]
  const pr =  filteredIds.map(id=> {
    return packages.find(item => item.id === id)
  })
  const [products, setProducts] = useState(pr)
+ console.log(pr)
+ console.log(packages)
+ console.log(products)
+ console.log(currentAccount)
  
 
 
