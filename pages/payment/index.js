@@ -5,7 +5,7 @@ import { SfcContext } from '../../context/sfcContext'
 
 const ethpay = () => {
 
-  const {setChoosenItemsAmount, choosenItems, paymentPackages, formData, handleChange, sendTransaction, currentAccount} = useContext(SfcContext)
+  const {setChoosenItemsAmount,ethPrice,setEthPrice,  choosenItems, paymentPackages, formData, handleChange, sendTransaction, currentAccount} = useContext(SfcContext)
   const [acc, setAcc] = useState()
 
   useEffect(() => {
@@ -28,14 +28,17 @@ const total = items.reduce((sum, i) => {
 }, 0)
 console.log(total)
 
-const handleSubmit = async (e) => {
-  const {addressTo, amount } = formData
-  console.log(addressTo, amount)
-  e.preventDefault()
-  if(!addressTo || !amount)  return 
-  sendTransaction()
+// const handleSubmit = async (e) => {
+//   const {addressTo, amount } = formData
+//   console.log(addressTo, amount)
+//   e.preventDefault()
+//   if(!addressTo || !amount)  return 
+//   sendTransaction()
 
-}
+// }
+
+
+
 
   return (
     <div className='payment-section width-[10vw] min-h-[100vh]' >

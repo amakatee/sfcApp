@@ -37,6 +37,7 @@ export const storagePayments = {
             title: 'Time Stamp',
             type: 'datetime'
         },
+       
         {
             name: 'user',
             titile: 'User Infomation',

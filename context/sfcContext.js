@@ -4,7 +4,11 @@ import { client } from "../lib/client";
 import { nanoid } from "nanoid";
 import {contractABI, contractAddress} from '../lib/constants'
 import { ethers } from "ethers"
+import axios from 'axios'
 
+
+const API_KEYETH = '0438a9a0df11b7b47c95fea38758a27d8e00debd9f5a388f090cd21a7f26083d'
+const API_ETH = 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,CNY,JPY,GBP'
 
 
 
@@ -27,6 +31,8 @@ const getEtheriumContract = () => {
 }
 
 
+
+
 export const SfcProvider = ({ children }) => {
     const [choosenItems, setChoosenItemsAmount] = useState([])
     const [appStatus, setAppStatus ] = useState('loading')
@@ -37,7 +43,7 @@ export const SfcProvider = ({ children }) => {
     const [paymentPackages, setPaymentPackages] = useState([])
     const [recieptPackages, setRecieptPackages] = useState([])
     const [addressesArray, setAdresses] = useState([])
-
+    const [ethPrice, setEthPrice] = useState() 
 
     const [isLoading, setIsLoading] = useState(false)
     const [formData, setFormData] = useState({
@@ -59,10 +65,15 @@ export const SfcProvider = ({ children }) => {
         fetchPayment()
         fetchReciept()
         fetchAddresses()
+        laodEth()
 
     }, [currentAccount, appStatus])
  
-   
+    useEffect(() => {
+        fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD').then(res => res.json()).then(data => setEthPrice(Object.values(data)[0]))
+      
+      
+      }, [])
 
 
     const checkIfWalletIsConnected = async  () => {
@@ -76,7 +87,7 @@ export const SfcProvider = ({ children }) => {
                 setAppStatus('connected')
                 setCurrentAccount(addressArray[0])
                 createUserAccount(addressArray[0])
-                // router.push('/home')
+                router.push('/home')
 
             }else {
                 //not connected
@@ -178,13 +189,16 @@ export const SfcProvider = ({ children }) => {
 
     const sendTransaction = async (
         metamask = window.ethereum, 
-        connectedAccount = currentAccount
+        connectedAccount = currentAccount,
+        
         ) => {
             try{
                 if(!metamask) return alert('Please install metamask')
                 const {addressTo, amount } = formData
                 const transactionContract = getEtheriumContract()
+                console.log(addressTo)
                 const parsedAmount = ethers.utils.parseEther(amount)
+                console.log(parsedAmount)
                 await metamask.request({
                     method: 'eth_sendTransaction',
                     params: [
@@ -319,27 +333,29 @@ export const SfcProvider = ({ children }) => {
       
         )
     }
-    console.log(paymentPackages)
+
     const fetchReciept = async () => {
         const query = `*[_type == "pendingReciept"]{
             "user":user->{walletAddress},
             billing,
             internationalCode,
             recipient,
+            address,
             type,
             weight,
             order
         }`
 
-        const recieptPackages = await client.fetch(query)
-        recieptPackages.forEach( async (item) => {
+        const recieptPackage = await client.fetch(query)
+        recieptPackage.forEach( async (item) => {
             const newItem = {
                 id: item.order,
                 billing: item.billing,
                 internationalCode: item.internationalCode,
-                recipient: item.reciepent,
+                recipient: item.recipient,
                 type: item.type,
                 weight:item.weight,
+                address: item.address,
                 order: item.order,
                 user: {
                     walletAddress: item.user.walletAddress
@@ -416,6 +432,59 @@ export const SfcProvider = ({ children }) => {
      
       })
     } 
+
+    async function laodEth() {
+        const res = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,CNY,JPY,GBP')
+      
+        //   let config = {
+        //     API_ETH,
+        //     BASE_URL: API_ETH,
+        //     method:'get',
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*',
+        //         'Access-Control-Allow-Headers': '*',
+        //         'Access-Control-Allow-Credentials': 'true'
+        //       },
+        //     'x-api-key': API_KEYETH ,
+
+        //   }
+        //   try{
+        //     let response = await axios.get(config)
+      
+        //     setEthPrice(response.data)
+
+        //   } catch(err){
+        //       console.log(err)
+
+        //   }
+       
+
+
+        //    fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,CNY,JPY,GBP', {
+        //     method: 'GET', 
+        //     headers: {
+        //          method: 'GET',
+        //          responseType: "json",
+        //         'Access-Control-Allow-Origin': '*',
+        //         "Access-Control-Allow-Credentials":"true",
+        //         'Access-Control-Allow-Methods':'*',
+        //         'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+        //         'Content-Type': 'application/json',
+        //         "X-API-Key": API_KEYETH ,
+        //         'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+        //     },
+          
+        //     credentials: 'same-origin',
+         
+           
+        // })
+        // .then((res) => setEthPrice(res))
+        // .catch((err) => console.log(err))
+        // const prices = await response.json()
+        // console.log(response)
+        // return users
+        // setEthPrice(prices)
+    }
     
   
 
@@ -440,7 +509,8 @@ export const SfcProvider = ({ children }) => {
         
         sendTransaction,
         handleChange,
-        formData
+        formData,
+        ethPrice
 
 
 

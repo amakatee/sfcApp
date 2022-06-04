@@ -50,11 +50,11 @@ export default function Navbar() {
 
                
 
-                   <li  onClick={() => {router.push(`/payment`)}} className="nav__item">
+                   {/* <li  onClick={() => {router.push(`/payment`)}} className="nav__item">
                        <Link href="" className="nav__link active__link">
                            <i className="nav__link active__link">{ router.asPath === `/payment` ? <AiOutlineAlipayCircle size={20} /> : <AiOutlineAlipay size={21} color='fff' /> }</i>
                        </Link>
-                   </li>
+                   </li> */}
 
                    <li  onClick={() => {router.push(`/profile`)}}  className="nav__item">
                        <Link href="" className="nav__link active__link">

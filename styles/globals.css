@@ -762,3 +762,25 @@ i {
     
 }
 }
+
+.t-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+    margin: auto;
+
+}
+
+.t-text {
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    font-weight: 300;
+    font-size: .7rem;
+
+}
+.t-flex {
+    align-items: center;
+    font-size: .8rem;
+  
+}

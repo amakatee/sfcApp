@@ -39,6 +39,11 @@ export const pendingReciept = {
             type: 'datetime'
         },
         {
+            name:'address',
+            title: 'Address',
+            type: 'string'
+        },
+        {
             name: 'user',
             titile: 'User Infomation',
             type: 'reference',

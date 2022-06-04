@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import InnerLayout from '../../components/InnerLayout'
 import PackageItem from '../../components/PackageItem'
 
@@ -13,12 +13,19 @@ import { client } from '../../lib/client'
 
 const payment = () => {
 
- const {paymentPackages, currentAccount, choosenItems, setChoosenItemsAmount} = useContext(SfcContext)
+ const [checked, setChecked] = useState(false)
+
+
+
+ const {paymentPackages,ethPrice,sendTransaction, formData ,setFormData, currentAccount, choosenItems, setChoosenItemsAmount} = useContext(SfcContext)
  const router = useRouter()
  const{register, handleSubmit} = useForm()
  const [submittedProduct, setSubmittedProduct] = useState(false)
  const packages = paymentPackages.filter(item => item.user.walletAddress === currentAccount)
 
+
+
+let ethWorth = parseFloat(1 /ethPrice)
 
 
  const ids = packages.map(item => item.id)
@@ -28,14 +35,19 @@ const payment = () => {
  })
  const [pr, setProducts] = useState(products)
 
- console.log(pr)
- console.log(packages)
- console.log(products)
- console.log(currentAccount)
- 
+
+ const hadleSubmit = () => {
+  if(!addressTo || !amount)  return 
+  console.log(addressTo, amount)
+ }
 
 
- async function onSubmit({product}) {
+
+console.log(choosenItems)
+console.log(products)
+console.log(pr)
+
+async function onSubmit({product}) {
   const pr = `${JSON.stringify(product)}`
    const filteredId = products.map(p => p.id)
    const similaritiy = filteredId.filter(x=> !product.includes(x))
@@ -52,9 +64,7 @@ const payment = () => {
         _id: stotageId,
      
         type: i,
-        // recipient: item.recipient,
-        // billing:item.billing,
-        // order:item.order,
+     
         timestamp: new Date().toISOString(),
         user: {
           _key: stotageId,
@@ -63,37 +73,87 @@ const payment = () => {
     
         }
        }
-       await client.createIfNotExists(payOrderDoc)
-       await client
-       .patch(currentAccount)
-       .setIfMissing({storagePayments: []})
-       .insert('after', 'storagePayments[-1]', [
-         {_key: stotageId,
-           _type:'reference',
-           _ref: stotageId
-         }
-       ]).commit()
+      //  await client.createIfNotExists(payOrderDoc)
+      //  await client
+      //  .patch(currentAccount)
+      //  .setIfMissing({storagePayments: []})
+      //  .insert('after', 'storagePayments[-1]', [
+      //    {_key: stotageId,
+      //      _type:'reference',
+      //      _ref: stotageId
+      //    }
+      //  ]).commit()
 
 
   
-
+        
        console.log(product)
+ 
+     
+       setChoosenItemsAmount(product)
+       handleSubmit()
       
-       setChoosenItemsAmount(prev => [...prev, product])
-       console.log(choosenItems)
       setProducts(items)
-      router.push('/payment')
-
+      formData.addressTo = '0x2a7bc55a1943259cfad2951cc73bf50fbcc2fefa'
+      formData.amount = totalEth.toString()
+      const {addressTo,  amount} = formData
+      console.log(addressTo, amount)
+      console.log(formData)
+       
+      sendTransaction()
   
-  // const unsimilaritiy = filteredId.filter(x=> product.includes(x))
-  //  console.log(similaritiy)
-  //  const nonitems = unsimilaritiy.map(s => {
-  //    return products.find(p => p.id === s)
-  //  })
-   
+      // router.push('/payment')
+      
+}
 
-  }
+
+
+
+  // const choosenProductItems = choosenItems?.map(id => {
+  //   return products.find(product => product.id === id)
+  // })
+  // console.log(choosenProductItems)
+  // console.log(products)
   
+//   const t = choosenItems.reduce((sum, i) => {
+//     return sum + parseInt(i.billing)
+  
+//   }, 0)
+// console.log( choosenItems)
+
+
+
+  const [total, setTotal] = useState(0)
+  // const totalE = total * ethWorth
+  // setTotalEth(totalE)
+  // console.log(totalEth)
+  // console.log(total)
+ 
+
+
+let totalEth = 0 
+
+total > 0 ? totalEth = total * ethWorth : totalEth = 0
+
+
+
+
+
+function handleChange(e){
+ 
+     
+      const id = e.target.value
+       const checkedItems = products.find(p => {
+      return p.id === id
+      
+    })
+    setChoosenItemsAmount(prev => [...prev, checkedItems])
+    e.target.checked ? setTotal(prev => prev + parseInt(checkedItems.billing)) : setTotal(prev => prev - parseInt(checkedItems.billing)) 
+    
+    
+}
+
+
 
 
   return (
@@ -114,6 +174,8 @@ const payment = () => {
              value={product.order} 
              name="product"
              {...register("product")}
+             onChange={(e) => handleChange(e)}
+           
              />
 
       
@@ -139,8 +201,11 @@ const payment = () => {
       )
       )}
       </div>
-      
-      <div className='flex justify-end mr-[10px]'><Button  type='submit'> Proceed Payment</Button></div>
+      <div className='t-section'>
+      <div className='t-flex'>
+      <span className="t-text">Total: </span> ${total} ~ ETH {totalEth} </div>
+      <div className='flex '><Button  type='submit'> Proceed Payment</Button></div>
+      </div>
 
     </div>
     </form>
