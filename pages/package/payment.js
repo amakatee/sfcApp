@@ -73,16 +73,16 @@ async function onSubmit({product}) {
     
         }
        }
-      //  await client.createIfNotExists(payOrderDoc)
-      //  await client
-      //  .patch(currentAccount)
-      //  .setIfMissing({storagePayments: []})
-      //  .insert('after', 'storagePayments[-1]', [
-      //    {_key: stotageId,
-      //      _type:'reference',
-      //      _ref: stotageId
-      //    }
-      //  ]).commit()
+       await client.createIfNotExists(payOrderDoc)
+       await client
+       .patch(currentAccount)
+       .setIfMissing({storagePayments: []})
+       .insert('after', 'storagePayments[-1]', [
+         {_key: stotageId,
+           _type:'reference',
+           _ref: stotageId
+         }
+       ]).commit()
 
 
   

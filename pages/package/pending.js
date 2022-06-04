@@ -189,7 +189,7 @@ useEffect(() => {
         <div className='flex items-center  justify-end gap-10 mt-[10px] mr-[20px] cursor-pointer'>
           <div className='flex items-center '  onClick={addressHandler}>
           <AiOutlinePlus />
-          <h1>   Add Address</h1>
+          <h1>   Add An Address</h1>
           </div>
           
          
